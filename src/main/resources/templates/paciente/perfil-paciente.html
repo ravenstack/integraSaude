@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>IntegraSaude - Meu Perfil</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Outfit', sans-serif; }
+        .skeleton {
+            background: linear-gradient(90deg, #f4ebf4 25%, #e8e0e9 50%, #f4ebf4 75%);
+            background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; color: transparent !important;
+        }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed": "#f0dbff", "tertiary-container": "#95712a", "tertiary-fixed-dim": "#ecc071",
+                        "surface-tint": "#7845ac", "error": "#ba1a1a", "surface-container-low": "#faf1fa",
+                        "outline-variant": "#cec3d3", "surface-dim": "#e0d7e0", "surface": "#fff7fe",
+                        "surface-bright": "#fff7fe", "surface-variant": "#e8e0e9", "surface-container": "#f4ebf4",
+                        "outline": "#7d7482", "surface-container-highest": "#e8e0e9", "surface-container-high": "#eee5ef",
+                        "on-background": "#1e1a21", "surface-container-lowest": "#ffffff", "primary": "#7543a9",
+                        "on-primary": "#ffffff", "primary-container": "#8f5cc4", "on-primary-container": "#fffbff",
+                        "secondary": "#6b567f", "on-secondary": "#ffffff", "secondary-container": "#e7cdfe",
+                        "tertiary": "#7a5812", "on-tertiary": "#ffffff", "error-container": "#ffdad6"
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                    spacing: { "margin": "24px", "xl": "48px", "sm": "16px", "md": "24px", "gutter": "20px", "base": "4px", "lg": "32px", "xs": "8px" },
+                    fontFamily: {
+                        "label-caps": ["Outfit"], "body-lg": ["Outfit"], "h1": ["Outfit"], "button": ["Outfit"],
+                        "body-sm": ["Outfit"], "h3": ["Outfit"], "h2": ["Outfit"], "body-md": ["Outfit"]
+                    }
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-background text-on-surface">
+<div class="flex min-h-screen relative">
+
+    <aside class="hidden md:flex flex-col h-screen shrink-0 py-md px-sm sticky top-0 bg-surface-container-low border-r border-outline-variant w-[240px]">
+        <div class="mb-lg px-sm mt-4">
+            <h2 class="font-h2 text-h2 font-bold text-primary">IntegraSaude</h2>
+            <p class="font-label-caps text-[10px] text-secondary uppercase tracking-wider mt-base">Gestão Clínica Multidisciplinar</p>
+        </div>
+
+        <nav class="flex-1 flex flex-col gap-xs mt-4">
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/dashboard-paciente" data-page="dashboard">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-body-md">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/agenda-paciente" data-page="agenda">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="font-body-md">Agenda</span>
+            </a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/marcar-consulta" data-page="marcar-consulta">
+                <span class="material-symbols-outlined">event_available</span>
+                <span class="font-body-md">Marcar Consulta</span>
+            </a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/documentos-paciente" data-page="documentos">
+                <span class="material-symbols-outlined">description</span>
+                <span class="font-body-md">Documentos</span>
+            </a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/diario-paciente" data-page="diario">
+                <span class="material-symbols-outlined">book</span>
+                <span class="font-body-md">Diário</span>
+            </a>
+        </nav>
+
+        <!-- Separador -->
+        <div class="my-md border-t border-outline-variant/50"></div>
+
+        <!-- Menu Secundário -->
+        <div class="flex flex-col gap-xs pb-md">
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs rounded transition-all" href="/suporte-paciente">
+                <span class="material-symbols-outlined">contact_support</span>
+                <span class="font-body-md">Falar com Suporte</span>
+            </a>
+            <button onclick="sair()" class="w-full flex items-center gap-sm text-error hover:bg-error-container/20 px-sm py-xs rounded transition-all text-left">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-body-md font-bold">Sair</span>
+            </button>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col min-w-0">
+
+        <!-- Header Fixo -->
+        <header class="sticky top-0 z-40 bg-surface border-b border-outline-variant px-margin py-sm flex justify-between items-center h-20 shadow-sm">
+            <div>
+                <h1 class="text-lg font-bold text-on-surface">Configurações</h1>
+                <p class="text-xs text-secondary">Gerencie seus dados pessoais e informações de contato</p>
+            </div>
+        </header>
+
+        <main class="p-margin max-w-7xl mx-auto w-full">
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-md mb-lg">
+                <div>
+                    <h1 class="font-h1 text-h1 text-on-surface">Configurações</h1>
+                    <p class="font-body-md text-on-surface-variant">Gerencie seus dados pessoais e informações de contato.</p>
+                </div>
+            </div>
+
+            <!-- Abas de Navegação -->
+            <div class="flex gap-md mb-lg border-b border-outline-variant">
+                <a href="/perfil-paciente" class="pb-md px-sm font-body-md text-primary border-b-2 border-primary">Perfil</a>
+                <a href="/seguranca-paciente" class="pb-md px-sm font-body-md text-on-surface-variant hover:text-on-surface border-b-2 border-transparent hover:border-outline-variant">Segurança</a>
+                <a href="/pagamentos-paciente" class="pb-md px-sm font-body-md text-on-surface-variant hover:text-on-surface border-b-2 border-transparent hover:border-outline-variant">Pagamentos</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+                <section class="md:col-span-8 space-y-lg">
+
+                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+                        <h3 class="font-h3 text-h3 text-primary mb-md">Meu Perfil</h3>
+
+                        <div class="flex items-center gap-md mb-lg pb-lg border-b border-outline-variant/30">
+                            <div class="relative group">
+                                <div id="foto-perfil-edit" class="h-20 w-20 rounded-full border border-primary bg-primary-fixed flex items-center justify-center text-primary font-bold shadow-sm text-2xl overflow-hidden">
+                                    --
+                                </div>
+                                <label for="upload-foto" class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                                    <span class="material-symbols-outlined text-white">photo_camera</span>
+                                </label>
+                                <input type="file" id="upload-foto" class="hidden" accept="image/*">
+                            </div>
+                            <div>
+                                <p class="font-body-md text-on-surface-variant">Atualize sua foto de perfil.</p>
+                                <p class="font-body-sm text-secondary">A imagem deve ser PNG ou JPG e ter até 5MB.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                            <div class="flex flex-col gap-base">
+                                <label class="font-label-caps text-[11px] text-on-surface-variant uppercase font-bold">Nome Completo</label>
+                                <input type="text" id="input-nome" class="bg-surface-container-low border border-outline-variant rounded-lg px-sm py-2 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md skeleton text-transparent" placeholder="Seu Nome"/>
+                            </div>
+
+                            <div class="flex flex-col gap-base">
+                                <label class="font-label-caps text-[11px] text-on-surface-variant uppercase font-bold">E-mail</label>
+                                <input type="email" id="input-email" class="bg-surface-container-low border border-outline-variant rounded-lg px-sm py-2 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md skeleton text-transparent" placeholder="seuemail@exemplo.com"/>
+                            </div>
+
+                            <div class="flex flex-col gap-base">
+                                <label class="font-label-caps text-[11px] text-on-surface-variant uppercase font-bold">Telefone (Celular)</label>
+                                <input type="text" id="input-telefone" class="bg-surface-container-low border border-outline-variant rounded-lg px-sm py-2 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md" placeholder="(00) 00000-0000"/>
+                            </div>
+
+                            <div class="flex flex-col gap-base">
+                                <label class="font-label-caps text-[11px] text-on-surface-variant uppercase font-bold">Data de Nascimento</label>
+                                <input type="date" id="input-nascimento" class="bg-surface-container-low border border-outline-variant rounded-lg px-sm py-2 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md text-on-surface"/>
+                            </div>
+                        </div>
+
+                        <div id="mensagem-perfil" class="hidden mt-md p-sm rounded-lg font-body-sm text-white"></div>
+
+                        <div class="mt-lg pt-md border-t border-outline-variant/30 flex justify-end">
+                            <button onclick="salvarPerfil()" class="bg-primary text-on-primary font-button px-lg py-sm rounded-full hover:opacity-90 transition-all shadow-md">Salvar Alterações</button>
+                        </div>
+                    </div>
+                </section>
+
+                <aside class="md:col-span-4 space-y-lg">
+                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+                        <h4 class="font-label-caps text-[11px] text-secondary uppercase mb-md font-bold">Detalhes da Conta</h4>
+                        <div class="space-y-sm">
+                            <div class="flex justify-between items-center py-2">
+                                <span class="font-body-sm text-on-surface-variant">Tipo de Conta:</span>
+                                <span class="font-body-sm font-bold text-on-surface">Paciente</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-t border-outline-variant/30">
+                                <span class="font-body-sm text-on-surface-variant">Membro desde:</span>
+                                <span class="font-body-sm font-bold text-on-surface">Outubro, 2023</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-t border-outline-variant/30">
+                                <span class="font-body-sm text-on-surface-variant">Status:</span>
+                                <span class="bg-green-100 text-green-800 font-label-caps text-[10px] px-2 py-0.5 rounded-full uppercase">Ativo</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-md bg-error-container/10 border border-error-container/50 rounded-xl">
+                        <h4 class="font-h3 text-error mb-2">Excluir Conta</h4>
+                        <p class="font-body-sm text-on-surface-variant mb-4">Ao excluir sua conta, todos os seus dados e histórico de consultas serão removidos permanentemente. Esta ação não pode ser desfeita.</p>
+                        <button class="text-error font-button border border-error px-4 py-2 rounded-full hover:bg-error-container/20 transition-all w-full">Solicitar Exclusão</button>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+</div>
+
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-[64px] bg-surface border-t border-outline-variant flex items-center justify-around px-sm z-50">
+    <a href="/dashboard-paciente" class="flex flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="font-label-caps text-[10px]">HOME</span>
+    </a>
+    <a href="/perfil-paciente" class="flex flex-col items-center gap-1 text-primary">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+        <span class="font-label-caps text-[10px]">PERFIL</span>
+    </a>
+</nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Inicialização de Usuário
+        const sessionStr = localStorage.getItem('user_session');
+        if (sessionStr) {
+            const usuario = JSON.parse(sessionStr);
+            const primeiroNome = usuario.nome.split(' ')[0];
+            const iniciais = primeiroNome.substring(0, 2).toUpperCase();
+
+            // Desativar skeletons e injetar dados (Header)
+            const elNome = document.getElementById('header-nome');
+            if(elNome) { elNome.classList.remove('skeleton'); elNome.innerText = primeiroNome; }
+
+            document.getElementById('header-avatar').innerText = iniciais;
+            document.getElementById('dropdown-nome').innerText = primeiroNome;
+            document.getElementById('dropdown-email').innerText = usuario.email;
+            document.getElementById('dropdown-avatar-grande').innerText = iniciais;
+
+            // Injetar dados no formulário de Perfil
+            const inputNome = document.getElementById('input-nome');
+            const inputEmail = document.getElementById('input-email');
+
+            if(inputNome) {
+                inputNome.value = usuario.nome;
+                inputNome.classList.remove('skeleton', 'text-transparent');
+            }
+            if(inputEmail) {
+                inputEmail.value = usuario.email;
+                inputEmail.classList.remove('skeleton', 'text-transparent');
+            }
+            document.getElementById('foto-perfil-edit').innerText = iniciais;
+        }
+
+        // Dropdown Header
+        const btnMenu = document.getElementById('btn-menu-utilizador');
+        const dropdownMenu = document.getElementById('dropdown-utilizador');
+        if (btnMenu && dropdownMenu) {
+            btnMenu.addEventListener('click', (e) => { e.stopPropagation(); dropdownMenu.classList.toggle('hidden'); });
+            document.addEventListener('click', (e) => { if (!btnMenu.contains(e.target) && !dropdownMenu.contains(e.target)) dropdownMenu.classList.add('hidden'); });
+        }
+
+        // Máscara de Telefone Simples
+        const inputTelefone = document.getElementById('input-telefone');
+        inputTelefone.addEventListener('input', function (e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+        });
+    });
+
+    function salvarPerfil() {
+        const nome = document.getElementById('input-nome').value;
+        const email = document.getElementById('input-email').value;
+        const divMensagem = document.getElementById('mensagem-perfil');
+
+        // Limpa estado da mensagem
+        divMensagem.classList.remove('hidden', 'bg-error', 'bg-green-500');
+
+        if (!nome || !email) {
+            divMensagem.classList.add('bg-error');
+            divMensagem.innerText = "Nome e E-mail são obrigatórios.";
+            return;
+        }
+
+        // Validação básica de email
+        if(!email.includes('@')) {
+            divMensagem.classList.add('bg-error');
+            divMensagem.innerText = "Por favor, insira um e-mail válido.";
+            return;
+        }
+
+        // Aqui, futuramente, faríamos o fetch(PUT) para atualizar o paciente no backend.
+
+        // Atualiza a sessão local e a interface
+        const sessionStr = localStorage.getItem('user_session');
+        if (sessionStr) {
+            const usuario = JSON.parse(sessionStr);
+            usuario.nome = nome;
+            usuario.email = email;
+            localStorage.setItem('user_session', JSON.stringify(usuario));
+
+            const primeiroNome = nome.split(' ')[0];
+            document.getElementById('header-nome').innerText = primeiroNome;
+            document.getElementById('dropdown-nome').innerText = primeiroNome;
+            document.getElementById('dropdown-email').innerText = email;
+        }
+
+        divMensagem.classList.add('bg-green-500');
+        divMensagem.innerText = "Perfil atualizado com sucesso!";
+
+        // Esconde a mensagem depois de 3 segundos
+        setTimeout(() => {
+            divMensagem.classList.add('hidden');
+        }, 3000);
+    }
+
+    function sair() {
+        localStorage.removeItem('user_session');
+        window.location.href = '/login';
+    }
+</script>
+</body>
+</html>

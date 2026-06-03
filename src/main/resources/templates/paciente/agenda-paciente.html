@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>IntegraSaude - Agenda</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed": "#f0dbff", "error": "#ba1a1a",
+                        "surface-container-low": "#faf1fa", "outline-variant": "#cec3d3",
+                        "surface": "#fff7fe", "surface-variant": "#e8e0e9", "surface-container": "#f4ebf4",
+                        "outline": "#7d7482", "surface-container-highest": "#e8e0e9",
+                        "surface-container-high": "#eee5ef", "on-background": "#1e1a21",
+                        "surface-container-lowest": "#ffffff", "primary": "#7543a9",
+                        "on-primary": "#ffffff", "primary-container": "#8f5cc4",
+                        "on-primary-container": "#fffbff", "secondary": "#6b567f",
+                        "on-secondary": "#ffffff", "secondary-container": "#e7cdfe",
+                        "tertiary": "#7a5812", "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6", "on-error-container": "#93000a",
+                        "on-surface": "#1e1a21", "background": "#fff7fe",
+                        "on-surface-variant": "#4b4451"
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px", "sm": "0.5rem" },
+                    spacing: { "md": "24px", "base": "4px", "xl": "48px", "sm": "16px", "lg": "32px", "xs": "8px", "margin": "24px" },
+                    fontFamily: { "label-caps": ["Outfit"], "body-lg": ["Outfit"], "h1": ["Outfit"], "button": ["Outfit"], "body-sm": ["Outfit"], "h3": ["Outfit"], "h2": ["Outfit"], "body-md": ["Outfit"] }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Outfit', sans-serif; }
+        .skeleton { background: linear-gradient(90deg, #f4ebf4 25%, #e8e0e9 50%, #f4ebf4 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; color: transparent !important; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<div class="flex min-h-screen relative">
+
+    <!-- Sidebar Fixo do Paciente -->
+    <aside class="hidden md:flex flex-col h-screen py-md px-sm sticky top-0 bg-surface-container-low border-r border-outline-variant w-[240px] shadow-sm">
+        <!-- Logo e Branding -->
+        <div class="mb-lg px-sm mt-4">
+            <h2 class="font-h2 text-h2 font-bold text-primary">IntegraSaude</h2>
+            <p class="font-label-caps text-[10px] text-secondary uppercase tracking-wider mt-base">Gestão Clínica<br>Multidisciplinar</p>
+        </div>
+
+        <!-- Menu Principal -->
+        <nav class="flex-1 flex flex-col gap-xs mt-4">
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded bg-primary-fixed text-primary sidebar-link" href="/dashboard-paciente" data-page="dashboard">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-body-md font-bold">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/agenda-paciente" data-page="agenda">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="font-body-md">Agenda</span>
+            </a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/marcar-consulta" data-page="marcar-consulta">
+                <span class="material-symbols-outlined">event_note</span>
+                <span class="font-body-md">Marcar Consulta</span>
+            </a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/documentos-paciente" data-page="documentos">
+                <span class="material-symbols-outlined">description</span>
+                <span class="font-body-md">Documentos</span>
+            </a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/diario-paciente" data-page="diario">
+                <span class="material-symbols-outlined">notebook</span>
+                <span class="font-body-md">Diário</span>
+            </a>
+        </nav>
+
+        <!-- Separador -->
+        <div class="my-md border-t border-outline-variant/50"></div>
+
+        <!-- Menu Secundário -->
+        <div class="flex flex-col gap-xs pb-md">
+            <a href="/suporte-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs rounded transition-all">
+                <span class="material-symbols-outlined">contact_support</span>
+                <span class="font-body-md">Falar com Suporte</span>
+            </a>
+            <button onclick="sair()" class="w-full flex items-center gap-sm text-error hover:bg-error-container/20 px-sm py-xs rounded transition-all text-left">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-body-md font-bold">Sair</span>
+            </button>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col min-w-0">
+
+        <!-- Header Fixo -->
+        <header class="sticky top-0 z-40 bg-surface border-b border-outline-variant px-margin py-sm flex justify-between items-center h-20 shadow-sm">
+            <div>
+                <h1 class="text-lg font-bold text-on-surface">Minha Agenda</h1>
+                <p class="text-xs text-secondary">Visualize e acompanhe seus agendamentos</p>
+            </div>
+        </header>
+
+        <main class="p-margin max-w-7xl mx-auto w-full">
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-md mb-lg">
+                <div>
+                    <h1 class="font-h1 text-on-surface">Minha Agenda</h1>
+                    <p class="font-body-md text-on-surface-variant">Visualize e acompanhe seus agendamentos.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-md">
+
+                <!-- Coluna Principal: Calendário + Histórico -->
+                <div class="lg:col-span-8 space-y-md">
+
+                    <!-- Calendário -->
+                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm">
+                        <div class="flex justify-between items-center mb-md">
+                            <h3 class="font-h3 font-bold text-on-surface flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-primary">calendar_month</span>
+                                <span id="calendario-mes-atual" class="capitalize">Carregando...</span>
+                            </h3>
+                            <div class="flex gap-xs">
+                                <button onclick="mudarMes(-1)" class="p-1 hover:bg-surface-container rounded-full border border-outline-variant transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+                                <button onclick="mudarMes(1)" class="p-1 hover:bg-surface-container rounded-full border border-outline-variant transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-7 gap-xs text-center font-label-caps text-secondary mb-xs text-xs">
+                            <div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SAB</div>
+                        </div>
+                        <div id="dias-calendario" class="grid grid-cols-7 gap-xs"></div>
+
+                        <!-- Legenda -->
+                        <div class="flex gap-md mt-md pt-md border-t border-outline-variant/30 flex-wrap">
+                            <div class="flex items-center gap-xs text-xs text-secondary"><div class="w-3 h-3 rounded-full bg-primary"></div> Hoje</div>
+                            <div class="flex items-center gap-xs text-xs text-secondary"><div class="w-3 h-3 rounded-full bg-tertiary"></div> Com consulta</div>
+                            <div class="flex items-center gap-xs text-xs text-secondary"><div class="w-3 h-3 rounded-full bg-error"></div> Cancelada</div>
+                        </div>
+                    </div>
+
+                    <!-- Histórico de Consultas -->
+                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+                        <div class="p-md border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+                            <h3 class="font-h3 font-bold text-on-surface">Histórico de Consultas</h3>
+                            <div class="flex gap-xs">
+                                <button onclick="filtrarStatus('todos')" id="btn-todos" class="px-sm py-1 rounded-full text-xs font-button bg-primary text-on-primary transition-all">Todas</button>
+                                <button onclick="filtrarStatus('AGENDADA')" id="btn-agendada" class="px-sm py-1 rounded-full text-xs font-button border border-outline-variant text-secondary hover:bg-surface-container transition-all">Agendadas</button>
+                                <button onclick="filtrarStatus('REALIZADA')" id="btn-realizada" class="px-sm py-1 rounded-full text-xs font-button border border-outline-variant text-secondary hover:bg-surface-container transition-all">Realizadas</button>
+                                <button onclick="filtrarStatus('CANCELADA')" id="btn-cancelada" class="px-sm py-1 rounded-full text-xs font-button border border-outline-variant text-secondary hover:bg-surface-container transition-all">Canceladas</button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-surface-container-low/50">
+                                <tr>
+                                    <th class="px-md py-sm font-label-caps text-secondary text-xs">DATA</th>
+                                    <th class="px-md py-sm font-label-caps text-secondary text-xs">TIPO</th>
+                                    <th class="px-md py-sm font-label-caps text-secondary text-xs">VALOR</th>
+                                    <th class="px-md py-sm font-label-caps text-secondary text-xs">STATUS</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tabela-historico" class="divide-y divide-outline-variant">
+                                <tr><td colspan="4" class="px-md py-8 text-center text-secondary font-body-sm italic">Carregando consultas...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna Lateral: Próximas Sessões -->
+                <div class="lg:col-span-4 space-y-md">
+
+                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm">
+                        <div class="flex justify-between items-center mb-md">
+                            <h3 class="font-h3 font-bold text-on-surface">Próximas Sessões</h3>
+                            <span id="badge-proximas" class="bg-primary-container text-on-primary-container text-xs px-2 py-1 rounded-full font-bold">0</span>
+                        </div>
+                        <div id="lista-proximas" class="space-y-sm">
+                            <div class="flex flex-col items-center justify-center py-8 text-on-surface-variant opacity-50">
+                                <span class="material-symbols-outlined text-[48px] mb-2">event_busy</span>
+                                <p class="font-body-md text-center text-sm">Nenhuma sessão<br>agendada.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card informativo -->
+                    <div class="bg-primary-fixed border border-primary/20 rounded-xl p-md shadow-sm">
+                        <div class="flex items-center gap-xs mb-sm">
+                            <span class="material-symbols-outlined text-primary">info</span>
+                            <h4 class="font-h3 text-primary text-sm font-bold">Sobre Reagendamentos</h4>
+                        </div>
+                        <p class="font-body-sm text-on-surface-variant text-xs leading-relaxed">Para reagendar ou cancelar uma sessão, entre em contato diretamente com seu profissional com pelo menos 24h de antecedência.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Modal detalhe do dia -->
+<div id="modal-dia" class="hidden fixed inset-0 bg-on-surface/40 z-[200] flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-surface-container-lowest w-full max-w-sm rounded-2xl p-lg shadow-xl border border-outline-variant">
+        <div class="flex justify-between items-center mb-md">
+            <h3 id="modal-dia-titulo" class="font-h3 font-bold text-on-surface">Consultas do dia</h3>
+            <button onclick="fecharModal()" class="text-on-surface-variant hover:bg-surface-variant rounded-full p-1 transition-colors"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <div id="modal-dia-conteudo" class="space-y-sm"></div>
+    </div>
+</div>
+
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-[64px] bg-surface border-t border-outline-variant flex items-center justify-around px-sm z-50">
+    <a href="/dashboard-paciente" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined">dashboard</span><span class="font-label-caps text-[10px]">HOME</span></a>
+    <a href="/agenda-paciente" class="flex flex-col items-center gap-1 text-primary"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">calendar_today</span><span class="font-label-caps text-[10px]">AGENDA</span></a>
+    <a href="/perfil-paciente" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined">person</span><span class="font-label-caps text-[10px]">PERFIL</span></a>
+</nav>
+
+<script>
+    let todasConsultas = [];
+    let filtroAtivo = 'todos';
+    let dataAtual = new Date();
+    let pacienteId = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const sessionStr = localStorage.getItem('user_session');
+        if (!sessionStr) { window.location.href = '/login'; return; }
+
+        const usuario = JSON.parse(sessionStr);
+        pacienteId = usuario.id;
+        const primeiroNome = usuario.nome ? usuario.nome.split(' ')[0] : 'Paciente';
+
+        const elNome = document.getElementById('header-nome');
+        if (elNome) { elNome.classList.remove('skeleton'); elNome.innerText = primeiroNome; }
+        document.getElementById('header-avatar').innerText = primeiroNome.substring(0, 2).toUpperCase();
+
+        await carregarConsultas();
+        renderCalendario();
+    });
+
+    async function carregarConsultas() {
+        try {
+            const res = await fetch(`/api/consultas/paciente/${pacienteId}`);
+            if (!res.ok) throw new Error();
+            todasConsultas = await res.json();
+            renderProximas();
+            renderHistorico(todasConsultas);
+        } catch (e) {
+            document.getElementById('tabela-historico').innerHTML =
+                `<tr><td colspan="4" class="px-md py-8 text-center text-secondary font-body-sm italic">Erro ao carregar consultas.</td></tr>`;
+        }
+    }
+
+    // ---- CALENDÁRIO ----
+    function mudarMes(dir) {
+        dataAtual.setMonth(dataAtual.getMonth() + dir);
+        renderCalendario();
+    }
+
+    function renderCalendario() {
+        const ano = dataAtual.getFullYear();
+        const mes = dataAtual.getMonth();
+        const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        document.getElementById('calendario-mes-atual').textContent = `${meses[mes]} ${ano}`;
+
+        const container = document.getElementById('dias-calendario');
+        container.innerHTML = '';
+
+        const primeiroDia = new Date(ano, mes, 1).getDay();
+        const totalDias = new Date(ano, mes + 1, 0).getDate();
+        const hoje = new Date();
+        const isMesAtual = hoje.getMonth() === mes && hoje.getFullYear() === ano;
+
+        // Mapa: dia → lista de consultas naquele dia
+        const mapaConsultas = {};
+        todasConsultas.forEach(c => {
+            const d = new Date(c.dataHora);
+            if (d.getFullYear() === ano && d.getMonth() === mes) {
+                const dia = d.getDate();
+                if (!mapaConsultas[dia]) mapaConsultas[dia] = [];
+                mapaConsultas[dia].push(c);
+            }
+        });
+
+        for (let i = 0; i < primeiroDia; i++) {
+            const vazio = document.createElement('div');
+            vazio.className = 'p-2 rounded-md bg-surface-container/20';
+            container.appendChild(vazio);
+        }
+
+        for (let dia = 1; dia <= totalDias; dia++) {
+            const isHoje = isMesAtual && dia === hoje.getDate();
+            const consultas = mapaConsultas[dia] || [];
+            const temAgendada = consultas.some(c => c.status === 'AGENDADA');
+            const temCancelada = consultas.some(c => c.status === 'CANCELADA') && !temAgendada;
+
+            const div = document.createElement('div');
+            div.className = [
+                'p-2 text-center rounded-md text-xs font-bold cursor-pointer transition-all',
+                isHoje
+                    ? 'bg-primary text-on-primary shadow-sm scale-105'
+                    : temAgendada
+                        ? 'bg-tertiary/20 text-tertiary border border-tertiary/30 hover:bg-tertiary/30'
+                        : temCancelada
+                            ? 'bg-error-container/40 text-error border border-error/20 hover:bg-error-container/60'
+                            : 'bg-surface-container-lowest text-on-surface border border-outline-variant/20 hover:border-primary hover:bg-primary-fixed'
+            ].join(' ');
+
+            div.innerHTML = consultas.length > 0
+                ? `${dia}<div class="w-1.5 h-1.5 rounded-full mx-auto mt-0.5 ${temAgendada ? 'bg-tertiary' : 'bg-error'}"></div>`
+                : `${dia}`;
+
+            if (consultas.length > 0) {
+                div.onclick = () => abrirModalDia(dia, mes, ano, consultas);
+            }
+
+            container.appendChild(div);
+        }
+    }
+
+    function abrirModalDia(dia, mes, ano, consultas) {
+        const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        document.getElementById('modal-dia-titulo').innerText = `${dia} de ${meses[mes]} de ${ano}`;
+        document.getElementById('modal-dia-conteudo').innerHTML = consultas.map(c => `
+            <div class="flex items-start gap-sm p-sm border border-outline-variant rounded-lg bg-surface-container-low">
+                <span class="material-symbols-outlined text-primary mt-0.5">${c.tipo === 'ONLINE' ? 'videocam' : 'person'}</span>
+                <div>
+                    <p class="font-body-md font-semibold text-on-surface">${c.tipo === 'ONLINE' ? 'Online' : 'Presencial'}</p>
+                    <p class="font-body-sm text-secondary">${new Date(c.dataHora).toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'})}</p>
+                    <p class="font-body-sm mt-1">${badgeStatus(c.status)}</p>
+                </div>
+            </div>
+        `).join('');
+        document.getElementById('modal-dia').classList.remove('hidden');
+    }
+
+    function fecharModal() { document.getElementById('modal-dia').classList.add('hidden'); }
+
+    // ---- PRÓXIMAS SESSÕES ----
+    function renderProximas() {
+        const agora = new Date();
+        const futuras = todasConsultas
+            .filter(c => c.status === 'AGENDADA' && new Date(c.dataHora) >= agora)
+            .sort((a, b) => new Date(a.dataHora) - new Date(b.dataHora))
+            .slice(0, 4);
+
+        document.getElementById('badge-proximas').innerText = futuras.length;
+
+        const container = document.getElementById('lista-proximas');
+        if (futuras.length === 0) {
+            container.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-8 text-on-surface-variant opacity-50">
+                    <span class="material-symbols-outlined text-[48px] mb-2">event_busy</span>
+                    <p class="font-body-md text-center text-sm">Nenhuma sessão<br>agendada.</p>
+                </div>`;
+            return;
+        }
+
+        container.innerHTML = futuras.map(c => {
+            const data = new Date(c.dataHora);
+            const dataStr = data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+            const horaStr = data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            return `
+                <div class="flex items-center gap-sm p-sm border border-outline-variant rounded-lg hover:border-primary transition-colors">
+                    <div class="w-10 h-10 rounded-lg bg-primary-fixed flex flex-col items-center justify-center text-primary">
+                        <span class="text-[10px] font-bold uppercase">${data.toLocaleDateString('pt-BR', {month:'short'})}</span>
+                        <span class="text-sm font-bold leading-none">${data.getDate()}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-body-md font-semibold text-on-surface text-sm truncate">${c.tipo === 'ONLINE' ? 'Sessão Online' : 'Sessão Presencial'}</p>
+                        <p class="font-body-sm text-secondary text-xs">${horaStr}</p>
+                    </div>
+                    <span class="material-symbols-outlined text-secondary text-sm">${c.tipo === 'ONLINE' ? 'videocam' : 'person'}</span>
+                </div>`;
+        }).join('');
+    }
+
+    // ---- HISTÓRICO ----
+    function filtrarStatus(status) {
+        filtroAtivo = status;
+        ['todos','agendada','realizada','cancelada'].forEach(s => {
+            const btn = document.getElementById(`btn-${s}`);
+            const isAtivo = (s === status || (s === 'todos' && status === 'todos'));
+            btn.className = isAtivo
+                ? 'px-sm py-1 rounded-full text-xs font-button bg-primary text-on-primary transition-all'
+                : 'px-sm py-1 rounded-full text-xs font-button border border-outline-variant text-secondary hover:bg-surface-container transition-all';
+        });
+        const filtradas = status === 'todos' ? todasConsultas : todasConsultas.filter(c => c.status === status);
+        renderHistorico(filtradas);
+    }
+
+    function renderHistorico(consultas) {
+        const tbody = document.getElementById('tabela-historico');
+        if (consultas.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" class="px-md py-8 text-center text-secondary font-body-sm italic">Nenhuma consulta encontrada.</td></tr>`;
+            return;
+        }
+        const ordenadas = [...consultas].sort((a, b) => new Date(b.dataHora) - new Date(a.dataHora));
+        tbody.innerHTML = ordenadas.map(c => {
+            const data = new Date(c.dataHora).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+            const valor = c.valor != null ? `R$ ${Number(c.valor).toFixed(2).replace('.', ',')}` : '--';
+            return `
+                <tr class="hover:bg-surface-container/30 transition-colors">
+                    <td class="px-md py-sm font-body-sm text-on-surface">${data}</td>
+                    <td class="px-md py-sm font-body-sm text-on-surface">
+                        <span class="flex items-center gap-xs"><span class="material-symbols-outlined text-sm text-secondary">${c.tipo === 'ONLINE' ? 'videocam' : 'person'}</span>${c.tipo === 'ONLINE' ? 'Online' : 'Presencial'}</span>
+                    </td>
+                    <td class="px-md py-sm font-body-sm text-on-surface">${valor}</td>
+                    <td class="px-md py-sm">${badgeStatus(c.status)}</td>
+                </tr>`;
+        }).join('');
+    }
+
+    function badgeStatus(status) {
+        const map = {
+            'AGENDADA':  { cor: 'bg-primary-fixed text-primary border border-primary/20',   label: 'Agendada' },
+            'REALIZADA': { cor: 'bg-green-100 text-green-800 border border-green-200',       label: 'Realizada' },
+            'CANCELADA': { cor: 'bg-error-container text-error border border-error/20',      label: 'Cancelada' }
+        };
+        const s = map[status] || { cor: 'bg-surface-container text-secondary', label: status };
+        return `<span class="font-label-caps text-[10px] px-2 py-0.5 rounded-full uppercase ${s.cor}">${s.label}</span>`;
+    }
+
+    // ===== INICIALIZAÇÃO DO USUÁRIO NO HEADER =====
+    document.addEventListener('DOMContentLoaded', () => {
+        const sessionStr = localStorage.getItem('user_session');
+        if (sessionStr) {
+            const usuario = JSON.parse(sessionStr);
+            const primeiroNome = usuario.nome.split(' ')[0];
+            const iniciais = primeiroNome.substring(0, 2).toUpperCase();
+
+            const elNome = document.getElementById('header-nome');
+            if(elNome) { elNome.classList.remove('skeleton'); elNome.innerText = primeiroNome; }
+
+            document.getElementById('header-avatar').innerText = iniciais;
+            document.getElementById('dropdown-nome').innerText = primeiroNome;
+            document.getElementById('dropdown-email').innerText = usuario.email;
+            document.getElementById('dropdown-avatar-grande').innerText = iniciais;
+        }
+
+        // Menu dropdown
+        const btnMenu = document.getElementById('btn-menu-utilizador');
+        const dropdownMenu = document.getElementById('dropdown-utilizador');
+        if (btnMenu && dropdownMenu) {
+            btnMenu.addEventListener('click', (e) => { e.stopPropagation(); dropdownMenu.classList.toggle('hidden'); });
+            document.addEventListener('click', (e) => { if (!btnMenu.contains(e.target) && !dropdownMenu.contains(e.target)) dropdownMenu.classList.add('hidden'); });
+        }
+    });
+
+    function sair() {
+        localStorage.removeItem('user_session');
+        window.location.href = '/login';
+    }
+</script>
+</body>
+</html>

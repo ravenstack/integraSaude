@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dashboard | IntegraSaúde</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="/js/dicas-do-dia.js"></script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Outfit', sans-serif; }
+        .skeleton {
+            background: linear-gradient(90deg, #f4ebf4 25%, #e8e0e9 50%, #f4ebf4 75%);
+            background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; color: transparent !important;
+        }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed": "#f0dbff", "tertiary-container": "#95712a", "tertiary-fixed-dim": "#ecc071",
+                        "surface-tint": "#7845ac", "error": "#ba1a1a", "surface-container-low": "#faf1fa",
+                        "outline-variant": "#cec3d3", "surface-dim": "#e0d7e0", "surface": "#fff7fe",
+                        "surface-bright": "#fff7fe", "surface-variant": "#e8e0e9", "surface-container": "#f4ebf4",
+                        "outline": "#7d7482", "surface-container-highest": "#e8e0e9", "surface-container-high": "#eee5ef",
+                        "on-background": "#1e1a21", "surface-container-lowest": "#ffffff", "primary": "#7543a9",
+                        "on-primary": "#ffffff", "primary-container": "#8f5cc4", "on-primary-container": "#fffbff",
+                        "secondary": "#6b567f", "on-secondary": "#ffffff", "secondary-container": "#e7cdfe",
+                        "tertiary": "#7a5812", "on-tertiary": "#ffffff", "error-container": "#ffdad6"
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                    spacing: { "margin": "24px", "xl": "48px", "sm": "16px", "md": "24px", "gutter": "20px", "base": "4px", "lg": "32px", "xs": "8px" },
+                    fontFamily: {
+                        "label-caps": ["Outfit"], "body-lg": ["Outfit"], "h1": ["Outfit"], "button": ["Outfit"],
+                        "body-sm": ["Outfit"], "h3": ["Outfit"], "h2": ["Outfit"], "body-md": ["Outfit"]
+                    }
+                },
+            },
+        };
+    </script>
+</head>
+
+<body class="bg-background text-on-surface">
+<div class="flex min-h-screen relative">
+
+    <!-- SIDEBAR PADRONIZADO -->
+    <aside class="hidden md:flex flex-col h-screen shrink-0 py-md px-sm sticky top-0 bg-surface-container-low border-r border-outline-variant w-[240px]">
+        <!-- Logo -->
+        <div class="mb-lg px-sm mt-4">
+            <h2 class="font-h2 text-h2 font-bold text-primary">IntegraSaude</h2>
+            <p class="font-label-caps text-[10px] text-secondary uppercase tracking-wider mt-base">Gestão Clínica Multidisciplinar</p>
+        </div>
+
+        <!-- Menu Principal -->
+        <nav class="flex-1 flex flex-col gap-xs mt-4">
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded bg-primary-fixed text-primary sidebar-link" href="/dashboard-paciente" data-page="dashboard">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-body-md font-bold">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/agenda-paciente" data-page="agenda">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="font-body-md">Agenda</span>
+            </a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/marcar-consulta" data-page="marcar-consulta">
+                <span class="material-symbols-outlined">event_note</span>
+                <span class="font-body-md">Marcar Consulta</span>
+            </a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/documentos-paciente" data-page="documentos">
+                <span class="material-symbols-outlined">description</span>
+                <span class="font-body-md">Documentos</span>
+            </a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" href="/diario-paciente" data-page="diario">
+                <span class="material-symbols-outlined">notebook</span>
+                <span class="font-body-md">Diário</span>
+            </a>
+        </nav>
+
+        <!-- Separador -->
+        <div class="border-t border-outline-variant my-md"></div>
+
+        <!-- Menu Inferior -->
+        <div class="flex flex-col gap-xs">
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded" href="/suporte-paciente">
+                <span class="material-symbols-outlined">contact_support</span>
+                <span class="font-body-md">Falar com suporte</span>
+            </a>
+            <button onclick="sair()" class="w-full flex items-center gap-sm text-error hover:bg-error-container/20 px-sm py-xs rounded transition-all text-left">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-body-md font-bold">Sair</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <div class="flex-1 flex flex-col min-w-0">
+
+        <!-- HEADER PADRONIZADO -->
+        <header class="flex justify-between items-center h-[64px] px-margin w-full sticky top-0 z-40 bg-surface border-b border-outline-variant">
+            <div class="flex items-center gap-md">
+                <div class="md:hidden flex items-center gap-2 text-primary">
+                    <span class="font-h3 text-h3 font-bold">IntegraSaude</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-sm relative">
+                <div class="text-right hidden sm:block mr-2">
+                    <p id="header-nome" class="text-[14px] font-bold text-on-surface skeleton">Carregando...</p>
+                    <p class="text-[11px] text-secondary uppercase font-bold tracking-widest">Paciente</p>
+                </div>
+
+                <button id="btn-menu-utilizador" class="h-10 w-10 rounded-full overflow-hidden border border-primary bg-primary-fixed flex items-center justify-center text-primary font-bold shadow-sm hover:ring-2 hover:ring-primary/30 transition-all focus:outline-none">
+                    <span id="header-avatar">--</span>
+                </button>
+
+                <div id="dropdown-utilizador" class="hidden absolute top-full right-0 mt-xs w-72 bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant z-[100] py-6 flex flex-col items-center">
+                    <div class="flex flex-col items-center px-lg w-full text-center">
+                        <p id="dropdown-email" class="font-body-sm text-secondary mb-sm truncate w-full">carregando@email.com</p>
+                        <div id="dropdown-avatar-grande" class="h-20 w-20 rounded-full overflow-hidden border-2 border-primary mb-sm bg-primary-fixed text-primary flex items-center justify-center text-2xl font-bold shadow-sm">--</div>
+                        <h3 class="font-h3 text-h3 text-on-surface mb-md truncate w-full">Olá, <span id="dropdown-nome">Paciente</span>!</h3>
+                    </div>
+                    <div class="w-full flex flex-col px-sm">
+                        <div class="border-t border-outline-variant w-full mb-xs"></div>
+                        <a class="flex items-center gap-md px-md py-sm hover:bg-surface-container-low transition-colors text-on-surface-variant rounded-lg" href="/perfil-paciente">
+                            <span class="material-symbols-outlined text-[20px]">settings</span>
+                            <span class="font-body-md">Configurações</span>
+                        </a>
+                        <div class="border-t border-outline-variant w-full my-xs"></div>
+                        <button onclick="sair()" class="w-full flex items-center gap-md px-md py-sm hover:bg-error-container/20 transition-colors text-error rounded-lg text-left">
+                            <span class="material-symbols-outlined text-[20px]">logout</span>
+                            <span class="font-body-md font-bold">Sair</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Scrollável -->
+        <main class="flex-1 overflow-y-auto p-margin">
+            <div class="max-w-7xl mx-auto space-y-lg">
+
+                <!-- Boas-vindas -->
+                <div class="mb-lg">
+                    <h1 class="font-bold text-3xl text-on-surface">Olá, <span id="welcome-name" class="text-primary skeleton">Carregando...</span>!</h1>
+                    <p class="text-secondary mt-sm">Acompanhe suas consultas, bem-estar e evolução clínica.</p>
+                </div>
+
+                <!-- Grid Principal (12 colunas) -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-md">
+
+                    <!-- Próxima Sessão (8 colunas) -->
+                    <div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-md p-md shadow-sm hover:border-primary transition-all">
+                        <div class="flex flex-col sm:flex-row gap-md items-start sm:items-center">
+                            <img src="/img/fotoC.jpg" alt="Consultório" class="w-full sm:w-40 h-28 object-cover rounded-sm" onerror="this.src='https://images.unsplash.com/photo-1527613426496-22c0926c04f9?q=80&w=200&auto=format&fit=crop'">
+                            <div class="flex-1">
+                                <span class="px-sm py-xs bg-primary-fixed text-primary text-[11px] font-bold rounded-full inline-block mb-xs">Sessão Confirmada</span>
+                                <h3 class="text-lg font-bold text-on-surface mb-xs">Consulta Psicoterapêutica</h3>
+                                <p class="text-secondary text-sm flex items-center gap-xs mb-md">
+                                    <span class="material-symbols-outlined text-sm">event</span>
+                                    15 de Junho, 2026 às 14:00
+                                </p>
+                                <div class="flex gap-xs flex-wrap">
+                                    <button onclick="abrirModalDetalhes()" class="px-md py-xs bg-primary text-on-primary rounded-md font-bold text-xs hover:bg-amethyst transition-all">Ver Detalhes</button>
+                                    <button onclick="abrirModalReagendar()" class="px-md py-xs border border-primary text-primary rounded-md font-bold text-xs hover:bg-primary-fixed transition-all">Reagendar</button>
+                                    <a href="/marcar-consulta" class="px-md py-xs border border-outline text-secondary rounded-md font-bold text-xs hover:bg-surface-container-low transition-all inline-block">Agendar Nova</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dica do Dia (4 colunas) -->
+                    <div id="card-dica" class="lg:col-span-4 bg-primary-container text-on-primary-container rounded-md p-md shadow-sm flex flex-col justify-center">
+                        <div class="flex items-center gap-xs mb-sm">
+                            <span id="dica-emoji" class="text-3xl">🧠</span>
+                            <h3 class="font-bold text-base">Dica do Dia</h3>
+                        </div>
+                        <p id="dica-texto" class="text-xs opacity-90 leading-relaxed">Carregando dica do dia...</p>
+                    </div>
+                </div>
+
+                <!-- Calendário + Humor (Grid 2) -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-md">
+
+                    <!-- Calendário (8 colunas) -->
+                    <div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-md p-md shadow-sm">
+                        <div class="flex justify-between items-center mb-md border-b border-outline-variant pb-xs">
+                            <h3 class="font-bold text-base text-on-surface flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-primary">calendar_month</span>
+                                Minha Agenda
+                            </h3>
+                            <div class="flex items-center gap-xs">
+                                <button onclick="mudarMes(-1)" class="p-sm rounded-full hover:bg-surface-container text-secondary transition-colors">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </button>
+                                <span id="mes-atual" class="font-bold text-xs text-primary min-w-[120px] text-center">-- 2026</span>
+                                <button onclick="mudarMes(1)" class="p-sm rounded-full hover:bg-surface-container text-secondary transition-colors">
+                                    <span class="material-symbols-outlined">chevron_right</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Cabeçalho dias da semana -->
+                        <div class="grid grid-cols-7 gap-xs text-center font-bold text-secondary mb-sm text-xs">
+                            <div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SAB</div>
+                        </div>
+
+                        <!-- Dias do calendário (clicáveis) -->
+                        <div id="dias-calendario" class="grid grid-cols-7 gap-xs">
+                            <!-- Injeção JS -->
+                        </div>
+                    </div>
+
+                    <!-- Diário de Humor (4 colunas) -->
+                    <div class="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-md p-md shadow-sm flex flex-col">
+                        <h3 class="font-bold text-base text-on-surface flex items-center gap-xs mb-sm border-b border-outline-variant pb-xs">
+                            <span class="material-symbols-outlined text-primary">mood</span>
+                            Registrar Sentimento
+                        </h3>
+
+                        <!-- Painel de Média -->
+                        <div class="bg-primary-fixed border border-outline-variant rounded-sm p-sm mb-md text-center flex flex-col items-center justify-center">
+                            <p class="text-[11px] text-secondary font-bold mb-xs">Média (7 dias)</p>
+                            <div class="text-2xl font-bold text-primary flex items-center gap-xs">
+                                <span id="media-humor-valor">-</span>
+                                <span id="media-humor-icon" class="material-symbols-outlined text-xl">sentiment_neutral</span>
+                            </div>
+                        </div>
+
+                        <!-- Botões de Emoção -->
+                        <div class="flex justify-between gap-xs mb-md">
+                            <button onclick="selecionarHumor(1, this)" class="btn-humor flex-1 py-sm rounded-md border border-outline-variant text-secondary hover:bg-error-container hover:text-error transition-all">
+                                <span class="material-symbols-outlined text-lg">sentiment_very_dissatisfied</span>
+                            </button>
+                            <button onclick="selecionarHumor(2, this)" class="btn-humor flex-1 py-sm rounded-md border border-outline-variant text-secondary hover:bg-surface-variant transition-all">
+                                <span class="material-symbols-outlined text-lg">sentiment_dissatisfied</span>
+                            </button>
+                            <button onclick="selecionarHumor(3, this)" class="btn-humor flex-1 py-sm rounded-md border border-outline-variant text-secondary hover:bg-surface-variant transition-all">
+                                <span class="material-symbols-outlined text-lg">sentiment_neutral</span>
+                            </button>
+                            <button onclick="selecionarHumor(4, this)" class="btn-humor flex-1 py-sm rounded-md border border-outline-variant text-secondary hover:bg-primary-container transition-all">
+                                <span class="material-symbols-outlined text-lg">sentiment_satisfied</span>
+                            </button>
+                            <button onclick="selecionarHumor(5, this)" class="btn-humor flex-1 py-sm rounded-md border border-outline-variant text-secondary hover:bg-primary hover:text-on-primary transition-all">
+                                <span class="material-symbols-outlined text-lg">sentiment_very_satisfied</span>
+                            </button>
+                        </div>
+
+                        <textarea id="nota-humor" rows="3" placeholder="Notas sobre seu dia..." class="w-full rounded-md border border-outline-variant p-xs text-xs resize-none mb-md focus:ring-2 focus:ring-primary"></textarea>
+
+                        <button onclick="salvarHumor()" class="w-full bg-primary text-on-primary font-bold py-sm rounded-md hover:bg-amethyst transition-all">
+                            Registrar Sentimento
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Modal: Detalhes da Consulta -->
+<div id="modal-detalhes" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-surface rounded-lg shadow-xl max-w-md w-full p-lg space-y-md">
+        <div class="flex justify-between items-center border-b border-outline-variant pb-md">
+            <h2 class="text-xl font-bold text-on-surface">Detalhes da Consulta</h2>
+            <button onclick="fecharModal('detalhes')" class="p-sm hover:bg-surface-container rounded-full">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div class="space-y-sm">
+            <div>
+                <p class="text-xs font-bold text-secondary uppercase">Profissional</p>
+                <p class="text-on-surface font-semibold">Dr. João Silva - Psicólogo Clínico</p>
+            </div>
+            <div>
+                <p class="text-xs font-bold text-secondary uppercase">Data & Hora</p>
+                <p class="text-on-surface font-semibold">15 de Junho, 2026 às 14:00</p>
+            </div>
+            <div>
+                <p class="text-xs font-bold text-secondary uppercase">Duração</p>
+                <p class="text-on-surface font-semibold">50 minutos</p>
+            </div>
+            <div>
+                <p class="text-xs font-bold text-secondary uppercase">Locação</p>
+                <p class="text-on-surface font-semibold">Av. Paulista, 1000 - São Paulo, SP</p>
+            </div>
+        </div>
+
+        <div class="pt-md border-t border-outline-variant flex gap-xs">
+            <button onclick="fecharModal('detalhes')" class="flex-1 px-md py-xs border border-outline rounded-md hover:bg-surface-container transition-all">Fechar</button>
+            <button onclick="irParaMarcarConsulta()" class="flex-1 px-md py-xs bg-primary text-on-primary rounded-md hover:bg-amethyst transition-all font-bold">Ir para Agendar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Reagendar Consulta -->
+<div id="modal-reagendar" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-surface rounded-lg shadow-xl max-w-md w-full p-lg space-y-md">
+        <div class="flex justify-between items-center border-b border-outline-variant pb-md">
+            <h2 class="text-xl font-bold text-on-surface">Reagendar Consulta</h2>
+            <button onclick="fecharModal('reagendar')" class="p-sm hover:bg-surface-container rounded-full">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <p class="text-sm text-secondary">Escolha uma nova data para sua consulta com Dr. João Silva</p>
+
+        <div class="space-y-sm">
+            <div>
+                <label class="text-xs font-bold text-secondary uppercase block mb-xs">Data</label>
+                <input type="date" id="nova-data" class="w-full px-md py-xs border border-outline-variant rounded-md focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+                <label class="text-xs font-bold text-secondary uppercase block mb-xs">Horário</label>
+                <input type="time" id="novo-horario" class="w-full px-md py-xs border border-outline-variant rounded-md focus:ring-2 focus:ring-primary">
+            </div>
+        </div>
+
+        <div class="pt-md border-t border-outline-variant flex gap-xs">
+            <button onclick="fecharModal('reagendar')" class="flex-1 px-md py-xs border border-outline rounded-md hover:bg-surface-container transition-all">Cancelar</button>
+            <button onclick="confirmarReagendamento()" class="flex-1 px-md py-xs bg-primary text-on-primary rounded-md hover:bg-amethyst transition-all font-bold">Confirmar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Verificação de sessão
+    document.addEventListener('DOMContentLoaded', () => {
+        const sessionStr = localStorage.getItem('user_session');
+        if (!sessionStr) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const usuario = JSON.parse(sessionStr);
+        const primeiroNome = usuario.nome.split(' ')[0];
+        const iniciais = primeiroNome.substring(0, 2).toUpperCase();
+
+        document.getElementById('welcome-name').textContent = primeiroNome;
+        document.getElementById('welcome-name').classList.remove('skeleton');
+        document.getElementById('header-nome').textContent = primeiroNome;
+        document.getElementById('header-nome').classList.remove('skeleton');
+
+        // Carregar dica do dia
+        carregarDicaDoDia();
+
+        // Inicializar componentes
+        renderCalendario();
+        calcularMediaHumor();
+    });
+
+    function carregarDicaDoDia() {
+        const dica = obterDicaDoDia();
+        document.getElementById('dica-emoji').textContent = dica.emoji;
+        document.getElementById('dica-texto').textContent = dica.conteudo;
+    }
+
+    function sair() {
+        localStorage.removeItem('user_session');
+        window.location.href = '/login';
+    }
+
+    // ===== CALENDÁRIO =====
+    let dataAtual = new Date();
+
+    function mudarMes(direcao) {
+        dataAtual.setMonth(dataAtual.getMonth() + direcao);
+        renderCalendario();
+    }
+
+    function renderCalendario() {
+        const ano = dataAtual.getFullYear();
+        const mes = dataAtual.getMonth();
+        const mesesNomes = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+        document.getElementById('mes-atual').textContent = `${mesesNomes[mes]} ${ano}`;
+
+        const diasContainer = document.getElementById('dias-calendario');
+        diasContainer.innerHTML = '';
+
+        const primeiroDia = new Date(ano, mes, 1).getDay();
+        const totalDias = new Date(ano, mes + 1, 0).getDate();
+        const hoje = new Date();
+        const isMesAtual = (hoje.getMonth() === mes && hoje.getFullYear() === ano);
+
+        // Espaçadores
+        for (let i = 0; i < primeiroDia; i++) {
+            diasContainer.appendChild(document.createElement('div'));
+        }
+
+        // Dias
+        for (let dia = 1; dia <= totalDias; dia++) {
+            const isHoje = isMesAtual && dia === hoje.getDate();
+            const div = document.createElement('div');
+
+            div.className = isHoje
+                ? 'p-xs text-center rounded-md text-xs font-bold bg-primary text-on-primary shadow-sm cursor-pointer hover:bg-amethyst transition-all'
+                : 'p-xs text-center rounded-md text-xs font-bold bg-surface-container-lowest text-on-surface border border-outline-variant/20 cursor-pointer hover:border-primary hover:bg-primary-fixed transition-all';
+
+            div.textContent = dia;
+            div.onclick = () => selecionarDia(ano, mes, dia);
+
+            // Marcar dias com consultas
+            if (dia === 15) {
+                div.innerHTML = `${dia} <div class="w-1 h-1 bg-tertiary rounded-full mx-auto mt-0.5"></div>`;
+            }
+
+            diasContainer.appendChild(div);
+        }
+    }
+
+    function selecionarDia(ano, mes, dia) {
+        const data = new Date(ano, mes, dia);
+        const dataFormatada = data.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        alert(`Você selecionou: ${dataFormatada}`);
+        // Aqui você pode implementar lógica para mostrar consultas desse dia
+    }
+
+    // ===== HUMOR =====
+    let humorSelecionado = null;
+
+    function selecionarHumor(nota, botao) {
+        humorSelecionado = nota;
+        document.querySelectorAll('.btn-humor').forEach(btn => {
+            btn.classList.remove('ring-2', 'ring-primary', 'bg-primary', 'text-on-primary');
+        });
+        botao.classList.add('ring-2', 'ring-primary');
+    }
+
+    function salvarHumor() {
+        if (!humorSelecionado) {
+            alert('Por favor, selecione um sentimento');
+            return;
+        }
+
+        const nota = document.getElementById('nota-humor').value;
+        const historico = JSON.parse(localStorage.getItem('humor_historico')) || [];
+        historico.push({
+            data: new Date().toISOString(),
+            nota: humorSelecionado,
+            texto: nota
+        });
+        localStorage.setItem('humor_historico', JSON.stringify(historico));
+
+        // Confirmação
+        const btn = event.target;
+        const txtOriginal = btn.textContent;
+        btn.textContent = '✓ Registrado!';
+        btn.disabled = true;
+        setTimeout(() => {
+            btn.textContent = txtOriginal;
+            btn.disabled = false;
+            document.getElementById('nota-humor').value = '';
+            humorSelecionado = null;
+            calcularMediaHumor();
+        }, 1500);
+
+        // Pergunta se quer ir ao diário
+        setTimeout(() => {
+            if (confirm('Deseja adicionar mais detalhes no seu Diário?')) {
+                window.location.href = '/diario-paciente';
+            }
+        }, 1600);
+    }
+
+    function calcularMediaHumor() {
+        const historico = JSON.parse(localStorage.getItem('humor_historico')) || [];
+        const visor = document.getElementById('media-humor-valor');
+        const icon = document.getElementById('media-humor-icon');
+
+        if (historico.length === 0) {
+            visor.textContent = '-';
+            icon.textContent = 'sentiment_neutral';
+            return;
+        }
+
+        const ultimos7 = historico.slice(-7);
+        const soma = ultimos7.reduce((acc, curr) => acc + curr.nota, 0);
+        const media = Math.round(soma / ultimos7.length);
+
+        visor.textContent = media;
+        const icones = { 1: 'sentiment_very_dissatisfied', 2: 'sentiment_dissatisfied', 3: 'sentiment_neutral', 4: 'sentiment_satisfied', 5: 'sentiment_very_satisfied' };
+        icon.textContent = icones[media] || 'sentiment_neutral';
+    }
+
+    // ===== MODAIS =====
+    function abrirModalDetalhes() {
+        document.getElementById('modal-detalhes').classList.remove('hidden');
+    }
+
+    function abrirModalReagendar() {
+        document.getElementById('modal-reagendar').classList.remove('hidden');
+    }
+
+    function fecharModal(tipo) {
+        document.getElementById(`modal-${tipo}`).classList.add('hidden');
+    }
+
+    function irParaMarcarConsulta() {
+        fecharModal('detalhes');
+        window.location.href = '/marcar-consulta';
+    }
+
+    function confirmarReagendamento() {
+        const data = document.getElementById('nova-data').value;
+        const hora = document.getElementById('novo-horario').value;
+
+        if (!data || !hora) {
+            alert('Por favor, selecione data e horário');
+            return;
+        }
+
+        alert(`Reagendamento solicitado para ${new Date(data).toLocaleDateString('pt-BR')} às ${hora}`);
+        fecharModal('reagendar');
+    }
+
+    // Fechar modais ao clicar fora
+    document.addEventListener('click', (e) => {
+        const modalDetalhes = document.getElementById('modal-detalhes');
+        const modalReagendar = document.getElementById('modal-reagendar');
+
+        if (e.target === modalDetalhes) fecharModal('detalhes');
+        if (e.target === modalReagendar) fecharModal('reagendar');
+    });
+
+    // ===== INICIALIZAÇÃO DO USUÁRIO NO HEADER =====
+    document.addEventListener('DOMContentLoaded', () => {
+        const sessionStr = localStorage.getItem('user_session');
+        if (sessionStr) {
+            const usuario = JSON.parse(sessionStr);
+            const primeiroNome = usuario.nome.split(' ')[0];
+            const iniciais = primeiroNome.substring(0, 2).toUpperCase();
+
+            const elNome = document.getElementById('header-nome');
+            if(elNome) { elNome.classList.remove('skeleton'); elNome.innerText = primeiroNome; }
+
+            document.getElementById('header-avatar').innerText = iniciais;
+            document.getElementById('dropdown-nome').innerText = primeiroNome;
+            document.getElementById('dropdown-email').innerText = usuario.email;
+            document.getElementById('dropdown-avatar-grande').innerText = iniciais;
+
+            // Atualizar welcome name
+            const welcomeName = document.getElementById('welcome-name');
+            if (welcomeName) { welcomeName.classList.remove('skeleton'); welcomeName.innerText = primeiroNome; }
+        }
+
+        // Menu dropdown
+        const btnMenu = document.getElementById('btn-menu-utilizador');
+        const dropdownMenu = document.getElementById('dropdown-utilizador');
+        if (btnMenu && dropdownMenu) {
+            btnMenu.addEventListener('click', (e) => { e.stopPropagation(); dropdownMenu.classList.toggle('hidden'); });
+            document.addEventListener('click', (e) => { if (!btnMenu.contains(e.target) && !dropdownMenu.contains(e.target)) dropdownMenu.classList.add('hidden'); });
+        }
+    });
+
+    function sair() {
+        localStorage.removeItem('user_session');
+        window.location.href = '/login';
+    }
+</script>
+</body>
+</html>

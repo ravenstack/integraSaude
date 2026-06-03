@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo} + ' | IntegraSaúde'">IntegraSaúde</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Outfit', sans-serif; }
+        .skeleton {
+            background: linear-gradient(90deg, #f4ebf4 25%, #e8e0e9 50%, #f4ebf4 75%);
+            background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; color: transparent !important;
+        }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed": "#f0dbff", "tertiary-container": "#95712a", "tertiary-fixed-dim": "#ecc071",
+                        "surface-tint": "#7845ac", "error": "#ba1a1a", "surface-container-low": "#faf1fa",
+                        "outline-variant": "#cec3d3", "surface-dim": "#e0d7e0", "surface": "#fff7fe",
+                        "surface-bright": "#fff7fe", "surface-variant": "#e8e0e9", "surface-container": "#f4ebf4",
+                        "outline": "#7d7482", "surface-container-highest": "#e8e0e9", "surface-container-high": "#eee5ef",
+                        "on-background": "#1e1a21", "surface-container-lowest": "#ffffff", "primary": "#7543a9",
+                        "on-primary": "#ffffff", "primary-container": "#8f5cc4", "on-primary-container": "#fffbff",
+                        "secondary": "#6b567f", "on-secondary": "#ffffff", "secondary-container": "#e7cdfe",
+                        "tertiary": "#7a5812", "on-tertiary": "#ffffff", "error-container": "#ffdad6"
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                    spacing: { "margin": "24px", "xl": "48px", "sm": "16px", "md": "24px", "gutter": "20px", "base": "4px", "lg": "32px", "xs": "8px" },
+                    fontFamily: {
+                        "label-caps": ["Outfit"], "body-lg": ["Outfit"], "h1": ["Outfit"], "button": ["Outfit"],
+                        "body-sm": ["Outfit"], "h3": ["Outfit"], "h2": ["Outfit"], "body-md": ["Outfit"]
+                    }
+                },
+            },
+        };
+    </script>
+</head>
+
+<body>
+<!-- SIDEBAR -->
+<aside th:fragment="sidebar" class="hidden md:flex flex-col h-screen shrink-0 py-md px-sm sticky top-0 bg-surface-container-low border-r border-outline-variant w-[240px]">
+    <!-- Logo -->
+    <div class="mb-lg px-sm mt-4">
+        <h2 class="font-h2 text-h2 font-bold text-primary">IntegraSaude</h2>
+        <p class="font-label-caps text-[10px] text-secondary uppercase tracking-wider mt-base">Gestão Clínica Multidisciplinar</p>
+    </div>
+
+    <!-- Menu Principal -->
+    <nav class="flex-1 flex flex-col gap-xs mt-4">
+        <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded" href="/dashboard-paciente">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-body-md">Dashboard</span>
+        </a>
+        <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded" href="/agenda-paciente">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span class="font-body-md">Agenda</span>
+        </a>
+        <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded" href="/marcar-consulta">
+            <span class="material-symbols-outlined">event_note</span>
+            <span class="font-body-md">Marcar Consulta</span>
+        </a>
+        <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded" href="/documentos-paciente">
+            <span class="material-symbols-outlined">description</span>
+            <span class="font-body-md">Documentos</span>
+        </a>
+        <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded" href="/diario-paciente">
+            <span class="material-symbols-outlined">notebook</span>
+            <span class="font-body-md">Diário</span>
+        </a>
+    </nav>
+
+    <!-- Separador -->
+    <div class="border-t border-outline-variant my-md"></div>
+
+    <!-- Menu Inferior -->
+    <div class="flex flex-col gap-xs">
+        <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded" href="/suporte-paciente">
+            <span class="material-symbols-outlined">contact_support</span>
+            <span class="font-body-md">Falar com suporte</span>
+        </a>
+        <button onclick="sair()" class="w-full flex items-center gap-sm text-error hover:bg-error-container/20 px-sm py-xs rounded transition-all text-left">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="font-body-md font-bold">Sair</span>
+        </button>
+    </div>
+</aside>
+
+<!-- HEADER -->
+<header th:fragment="header" class="flex justify-between items-center h-[64px] px-margin w-full sticky top-0 z-40 bg-surface border-b border-outline-variant">
+    <div class="flex items-center gap-md">
+        <div class="md:hidden flex items-center gap-2 text-primary">
+            <span class="font-h3 text-h3 font-bold">IntegraSaude</span>
+        </div>
+    </div>
+
+    <div class="flex items-center gap-sm relative">
+        <div class="text-right hidden sm:block mr-2">
+            <p id="header-nome" class="text-[14px] font-bold text-on-surface skeleton">Carregando...</p>
+            <p class="text-[11px] text-secondary uppercase font-bold tracking-widest">Paciente</p>
+        </div>
+
+        <button id="btn-menu-utilizador" class="h-10 w-10 rounded-full overflow-hidden border border-primary bg-primary-fixed flex items-center justify-center text-primary font-bold shadow-sm hover:ring-2 hover:ring-primary/30 transition-all focus:outline-none">
+            <span id="header-avatar">--</span>
+        </button>
+
+        <div id="dropdown-utilizador" class="hidden absolute top-full right-0 mt-xs w-72 bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant z-[100] py-6 flex flex-col items-center">
+            <div class="flex flex-col items-center px-lg w-full text-center">
+                <p id="dropdown-email" class="font-body-sm text-secondary mb-sm truncate w-full">carregando@email.com</p>
+                <div id="dropdown-avatar-grande" class="h-20 w-20 rounded-full overflow-hidden border-2 border-primary mb-sm bg-primary-fixed text-primary flex items-center justify-center text-2xl font-bold shadow-sm">--</div>
+                <h3 class="font-h3 text-h3 text-on-surface mb-md truncate w-full">Olá, <span id="dropdown-nome">Paciente</span>!</h3>
+            </div>
+            <div class="w-full flex flex-col px-sm">
+                <div class="border-t border-outline-variant w-full mb-xs"></div>
+                <a class="flex items-center gap-md px-md py-sm hover:bg-surface-container-low transition-colors text-on-surface-variant rounded-lg" href="/perfil-paciente">
+                    <span class="material-symbols-outlined text-[20px]">settings</span>
+                    <span class="font-body-md">Configurações</span>
+                </a>
+                <div class="border-t border-outline-variant w-full my-xs"></div>
+                <button onclick="sair()" class="w-full flex items-center gap-md px-md py-sm hover:bg-error-container/20 transition-colors text-error rounded-lg text-left">
+                    <span class="material-symbols-outlined text-[20px]">logout</span>
+                    <span class="font-body-md font-bold">Sair</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Script para inicializar usuário e menu -->
+<script th:fragment="scripts">
+    document.addEventListener('DOMContentLoaded', () => {
+        const sessionStr = localStorage.getItem('user_session');
+        if (sessionStr) {
+            const usuario = JSON.parse(sessionStr);
+            const primeiroNome = usuario.nome.split(' ')[0];
+            const iniciais = primeiroNome.substring(0, 2).toUpperCase();
+
+            const elNome = document.getElementById('header-nome');
+            if(elNome) { elNome.classList.remove('skeleton'); elNome.innerText = primeiroNome; }
+
+            document.getElementById('header-avatar').innerText = iniciais;
+            document.getElementById('dropdown-nome').innerText = primeiroNome;
+            document.getElementById('dropdown-email').innerText = usuario.email;
+            document.getElementById('dropdown-avatar-grande').innerText = iniciais;
+        }
+
+        const btnMenu = document.getElementById('btn-menu-utilizador');
+        const dropdownMenu = document.getElementById('dropdown-utilizador');
+        if (btnMenu && dropdownMenu) {
+            btnMenu.addEventListener('click', (e) => { e.stopPropagation(); dropdownMenu.classList.toggle('hidden'); });
+            document.addEventListener('click', (e) => { if (!btnMenu.contains(e.target) && !dropdownMenu.contains(e.target)) dropdownMenu.classList.add('hidden'); });
+        }
+    });
+
+    function sair() {
+        localStorage.removeItem('user_session');
+        window.location.href = '/login';
+    }
+</script>
+</body>
+</html>

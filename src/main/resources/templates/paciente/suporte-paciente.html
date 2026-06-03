@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>IntegraSaude - Fale com Suporte</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Outfit', sans-serif; }
+        .skeleton {
+            background: linear-gradient(90deg, #f4ebf4 25%, #e8e0e9 50%, #f4ebf4 75%);
+            background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; color: transparent !important;
+        }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed": "#f0dbff", "tertiary-container": "#95712a", "tertiary-fixed-dim": "#ecc071",
+                        "surface-tint": "#7845ac", "error": "#ba1a1a", "surface-container-low": "#faf1fa",
+                        "outline-variant": "#cec3d3", "surface-dim": "#e0d7e0", "surface": "#fff7fe",
+                        "surface-bright": "#fff7fe", "surface-variant": "#e8e0e9", "surface-container": "#f4ebf4",
+                        "outline": "#7d7482", "surface-container-highest": "#e8e0e9", "surface-container-high": "#eee5ef",
+                        "on-background": "#1e1a21", "surface-container-lowest": "#ffffff", "primary": "#7543a9",
+                        "on-primary": "#ffffff", "primary-container": "#8f5cc4", "on-primary-container": "#fffbff",
+                        "secondary": "#6b567f", "on-secondary": "#ffffff", "secondary-container": "#e7cdfe",
+                        "tertiary": "#7a5812", "on-tertiary": "#ffffff", "error-container": "#ffdad6"
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                    spacing: { "margin": "24px", "xl": "48px", "sm": "16px", "md": "24px", "gutter": "20px", "base": "4px", "lg": "32px", "xs": "8px" },
+                    fontFamily: {
+                        "label-caps": ["Outfit"], "body-lg": ["Outfit"], "h1": ["Outfit"], "button": ["Outfit"],
+                        "body-sm": ["Outfit"], "h3": ["Outfit"], "h2": ["Outfit"], "body-md": ["Outfit"]
+                    }
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-background text-on-surface">
+<div class="flex min-h-screen relative">
+
+    <aside class="hidden md:flex flex-col h-screen shrink-0 py-md px-sm sticky top-0 bg-surface-container-low border-r border-outline-variant w-[240px]">
+        <div class="mb-lg px-sm mt-4">
+            <h2 class="font-h2 text-h2 font-bold text-primary">IntegraSaude</h2>
+            <p class="font-label-caps text-[10px] text-secondary uppercase tracking-wider mt-base">Gestão Clínica Multidisciplinar</p>
+        </div>
+
+        <nav class="flex-1 flex flex-col gap-xs mt-4">
+            <a href="/dashboard-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link bg-primary-fixed text-primary font-bold" data-page="dashboard">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-body-md">Dashboard</span>
+            </a>
+            <a href="/agenda-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="agenda">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="font-body-md">Agenda</span>
+            </a>
+            <a href="/marcar-consulta" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="marcar-consulta">
+                <span class="material-symbols-outlined">event_note</span>
+                <span class="font-body-md">Marcar Consulta</span>
+            </a>
+            <a href="/documentos-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="documentos">
+                <span class="material-symbols-outlined">description</span>
+                <span class="font-body-md">Documentos</span>
+            </a>
+            <a href="/diario-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="diario">
+                <span class="material-symbols-outlined">notebook</span>
+                <span class="font-body-md">Diário</span>
+            </a>
+        </nav>
+
+        <!-- Separador -->
+        <div class="border-t border-outline-variant my-md"></div>
+
+        <!-- Menu Secundário -->
+        <div class="flex flex-col gap-xs">
+            <a href="/suporte-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs rounded transition-all">
+                <span class="material-symbols-outlined">contact_support</span>
+                <span class="font-body-md">Falar com Suporte</span>
+            </a>
+            <button onclick="sair()" class="w-full flex items-center gap-sm text-error hover:bg-error-container/20 px-sm py-xs rounded transition-all text-left">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-body-md font-bold">Sair</span>
+            </button>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col min-w-0">
+        <header class="flex justify-between items-center h-[64px] px-margin w-full sticky top-0 z-40 bg-surface border-b border-outline-variant">
+            <div class="flex items-center gap-md">
+                <div class="md:hidden flex items-center gap-2 text-primary">
+                    <span class="font-h3 text-h3 font-bold">IntegraSaude</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-sm relative">
+                <div class="text-right hidden sm:block mr-2">
+                    <p id="header-nome" class="text-[14px] font-bold text-on-surface skeleton">Carregando...</p>
+                    <p class="text-[11px] text-secondary uppercase font-bold tracking-widest">Paciente</p>
+                </div>
+
+                <button id="btn-menu-utilizador" class="h-10 w-10 rounded-full overflow-hidden border border-primary bg-primary-fixed flex items-center justify-center text-primary font-bold shadow-sm hover:ring-2 hover:ring-primary/30 transition-all focus:outline-none">
+                    <span id="header-avatar">--</span>
+                </button>
+
+                <div id="dropdown-utilizador" class="hidden absolute top-full right-0 mt-xs w-72 bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant z-[100] py-6 flex flex-col items-center">
+                    <div class="flex flex-col items-center px-lg w-full text-center">
+                        <p id="dropdown-email" class="font-body-sm text-secondary mb-sm truncate w-full">carregando@email.com</p>
+                        <div id="dropdown-avatar-grande" class="h-20 w-20 rounded-full overflow-hidden border-2 border-primary mb-sm bg-primary-fixed text-primary flex items-center justify-center text-2xl font-bold shadow-sm">--</div>
+                        <h3 class="font-h3 text-h3 text-on-surface mb-md truncate w-full">Olá, <span id="dropdown-nome">Paciente</span>!</h3>
+                    </div>
+                    <div class="w-full flex flex-col px-sm">
+                        <div class="border-t border-outline-variant w-full mb-xs"></div>
+                        <a class="flex items-center gap-md px-md py-sm hover:bg-surface-container-low transition-colors text-on-surface-variant rounded-lg" href="/perfil-paciente">
+                            <span class="material-symbols-outlined text-[20px]">settings</span>
+                            <span class="font-body-md">Configurações</span>
+                        </a>
+                        <div class="border-t border-outline-variant w-full my-xs"></div>
+                        <button onclick="sair()" class="w-full flex items-center gap-md px-md py-sm hover:bg-error-container/20 transition-colors text-error rounded-lg text-left">
+                            <span class="material-symbols-outlined text-[20px]">logout</span>
+                            <span class="font-body-md font-bold">Sair</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="p-margin max-w-7xl mx-auto w-full">
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-md mb-lg">
+                <div>
+                    <h1 class="font-h1 text-h1 text-on-surface">Fale com Suporte</h1>
+                    <p class="font-body-md text-on-surface-variant">Estamos aqui para ajudar você. Escolha a forma de contato.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+                <!-- Opção E-mail -->
+                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="abrirFormularioEmail()">
+                    <div class="flex items-start gap-md mb-md">
+                        <div class="h-12 w-12 rounded-full bg-primary-container flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-[28px]">mail</span>
+                        </div>
+                        <div>
+                            <h3 class="font-h3 text-h3 text-on-surface">Enviar E-mail</h3>
+                            <p class="font-body-sm text-on-surface-variant">Responderemos em até 24 horas</p>
+                        </div>
+                    </div>
+                    <p class="font-body-md text-on-surface-variant mb-md">Descreva seu problema e envie uma mensagem ao nosso time de suporte.</p>
+                    <div class="flex items-center gap-sm text-primary font-body-md">
+                        <span>Enviar e-mail</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </div>
+                </div>
+
+                <!-- Opção Chat -->
+                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="abrirChat()">
+                    <div class="flex items-start gap-md mb-md">
+                        <div class="h-12 w-12 rounded-full bg-primary-container flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-[28px]">chat</span>
+                        </div>
+                        <div>
+                            <h3 class="font-h3 text-h3 text-on-surface">Chat Online</h3>
+                            <p class="font-body-sm text-on-surface-variant">Resposta instantânea com nosso time</p>
+                        </div>
+                    </div>
+                    <p class="font-body-md text-on-surface-variant mb-md">Converse em tempo real com um dos nossos agentes de suporte.</p>
+                    <div class="flex items-center gap-sm text-primary font-body-md">
+                        <span>Iniciar chat</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal - Formulário E-mail -->
+            <div id="modal-email" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-sm">
+                <div class="bg-surface-container-lowest rounded-2xl shadow-lg max-w-md w-full p-lg">
+                    <div class="flex justify-between items-center mb-lg">
+                        <h2 class="font-h2 text-h2">Enviar E-mail</h2>
+                        <button onclick="fecharFormularioEmail()" class="text-on-surface-variant hover:text-on-surface">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+
+                    <div class="space-y-md">
+                        <div>
+                            <label class="font-label-caps text-[11px] text-on-surface-variant uppercase font-bold block mb-base">Assunto</label>
+                            <input type="text" id="email-assunto" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-sm py-2 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md" placeholder="Qual é o seu problema?"/>
+                        </div>
+
+                        <div>
+                            <label class="font-label-caps text-[11px] text-on-surface-variant uppercase font-bold block mb-base">Mensagem</label>
+                            <textarea id="email-mensagem" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-sm py-2 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md resize-none h-32" placeholder="Descreva detalhadamente o seu problema..."></textarea>
+                        </div>
+
+                        <div class="flex gap-sm">
+                            <button onclick="fecharFormularioEmail()" class="flex-1 border border-outline-variant text-on-surface font-button px-lg py-sm rounded-full hover:bg-surface-container-low transition-all">Cancelar</button>
+                            <button onclick="enviarEmail()" class="flex-1 bg-primary text-on-primary font-button px-lg py-sm rounded-full hover:opacity-90 transition-all shadow-md">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal - Chat -->
+            <div id="modal-chat" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-sm">
+                <div class="bg-surface-container-lowest rounded-2xl shadow-lg max-w-md w-full p-lg flex flex-col max-h-[600px]">
+                    <div class="flex justify-between items-center mb-lg">
+                        <h2 class="font-h2 text-h2">Chat de Suporte</h2>
+                        <button onclick="fecharChat()" class="text-on-surface-variant hover:text-on-surface">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+
+                    <!-- Mensagens -->
+                    <div id="chat-mensagens" class="flex-1 overflow-y-auto space-y-md mb-md pb-md" style="max-height: 300px;">
+                        <!-- Mensagens serão adicionadas aqui -->
+                    </div>
+
+                    <!-- Input -->
+                    <div class="flex gap-sm items-end">
+                        <input type="text" id="chat-input" class="flex-1 bg-surface-container-low border border-outline-variant rounded-lg px-sm py-2 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-body-md" placeholder="Digite sua mensagem..."/>
+                        <button onclick="enviarMensagemChat()" class="bg-primary text-on-primary p-2 rounded-full hover:opacity-90 transition-all">
+                            <span class="material-symbols-outlined">send</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-[64px] bg-surface border-t border-outline-variant flex items-center justify-around px-sm z-50">
+    <a href="/dashboard-paciente" class="flex flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="font-label-caps text-[10px]">HOME</span>
+    </a>
+    <a href="/suporte-paciente" class="flex flex-col items-center gap-1 text-primary">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">contact_support</span>
+        <span class="font-label-caps text-[10px]">SUPORTE</span>
+    </a>
+</nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sessionStr = localStorage.getItem('user_session');
+        if (sessionStr) {
+            const usuario = JSON.parse(sessionStr);
+            const primeiroNome = usuario.nome.split(' ')[0];
+            const iniciais = primeiroNome.substring(0, 2).toUpperCase();
+
+            const elNome = document.getElementById('header-nome');
+            if(elNome) { elNome.classList.remove('skeleton'); elNome.innerText = primeiroNome; }
+
+            document.getElementById('header-avatar').innerText = iniciais;
+            document.getElementById('dropdown-nome').innerText = primeiroNome;
+            document.getElementById('dropdown-email').innerText = usuario.email;
+            document.getElementById('dropdown-avatar-grande').innerText = iniciais;
+        }
+
+        const btnMenu = document.getElementById('btn-menu-utilizador');
+        const dropdownMenu = document.getElementById('dropdown-utilizador');
+        if (btnMenu && dropdownMenu) {
+            btnMenu.addEventListener('click', (e) => { e.stopPropagation(); dropdownMenu.classList.toggle('hidden'); });
+            document.addEventListener('click', (e) => { if (!btnMenu.contains(e.target) && !dropdownMenu.contains(e.target)) dropdownMenu.classList.add('hidden'); });
+        }
+
+        // Inicializar chat com mensagem de boas-vindas
+        const chatMensagens = document.getElementById('chat-mensagens');
+        if (chatMensagens) {
+            adicionarMensagemChat('Olá! Como posso ajudá-lo hoje?', 'agente');
+        }
+
+        // Permitir enviar com Enter no chat
+        const chatInput = document.getElementById('chat-input');
+        if (chatInput) {
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    enviarMensagemChat();
+                }
+            });
+        }
+    });
+
+    function abrirFormularioEmail() {
+        document.getElementById('modal-email').classList.remove('hidden');
+    }
+
+    function fecharFormularioEmail() {
+        document.getElementById('modal-email').classList.add('hidden');
+    }
+
+    function enviarEmail() {
+        const assunto = document.getElementById('email-assunto').value;
+        const mensagem = document.getElementById('email-mensagem').value;
+
+        if (!assunto || !mensagem) {
+            alert('Por favor, preencha todos os campos.');
+            return;
+        }
+
+        alert('E-mail enviado com sucesso! Responderemos em até 24 horas.');
+        document.getElementById('email-assunto').value = '';
+        document.getElementById('email-mensagem').value = '';
+        fecharFormularioEmail();
+    }
+
+    function abrirChat() {
+        document.getElementById('modal-chat').classList.remove('hidden');
+        document.getElementById('chat-input').focus();
+    }
+
+    function fecharChat() {
+        document.getElementById('modal-chat').classList.add('hidden');
+    }
+
+    function adicionarMensagemChat(texto, tipo = 'usuario') {
+        const chatMensagens = document.getElementById('chat-mensagens');
+        const div = document.createElement('div');
+        div.className = tipo === 'usuario'
+            ? 'flex justify-end'
+            : 'flex justify-start';
+
+        const mensagem = document.createElement('div');
+        mensagem.className = tipo === 'usuario'
+            ? 'bg-primary text-on-primary px-sm py-2 rounded-lg max-w-xs font-body-sm'
+            : 'bg-surface-container text-on-surface px-sm py-2 rounded-lg max-w-xs font-body-sm';
+
+        mensagem.textContent = texto;
+        div.appendChild(mensagem);
+        chatMensagens.appendChild(div);
+        chatMensagens.scrollTop = chatMensagens.scrollHeight;
+    }
+
+    function enviarMensagemChat() {
+        const input = document.getElementById('chat-input');
+        const mensagem = input.value.trim();
+
+        if (!mensagem) return;
+
+        adicionarMensagemChat(mensagem, 'usuario');
+        input.value = '';
+
+        // Resposta automática com botões
+        setTimeout(() => {
+            const respostas = [
+                'Estou aqui para ajudar! Qual é a sua dúvida?',
+                'Posso ajudá-lo com informações sobre sua conta, agendamentos ou pagamentos.',
+                'Selecione uma das opções abaixo:'
+            ];
+
+            respostas.forEach((texto, index) => {
+                setTimeout(() => {
+                    if (index === respostas.length - 1) {
+                        adicionarMensagemChat(texto, 'agente');
+                        adicionarBotõesChat();
+                    } else {
+                        adicionarMensagemChat(texto, 'agente');
+                    }
+                }, index * 500);
+            });
+        }, 800);
+    }
+
+    function adicionarBotõesChat() {
+        const chatMensagens = document.getElementById('chat-mensagens');
+        const div = document.createElement('div');
+        div.className = 'flex justify-start gap-sm flex-wrap';
+
+        const botoes = [
+            { texto: 'Dúvida sobre conta', acao: 'selecionarOpcao("Tenho dúvida sobre minha conta")' },
+            { texto: 'Problema agendamento', acao: 'selecionarOpcao("Tenho problema com agendamento")' },
+            { texto: 'Questão de pagamento', acao: 'selecionarOpcao("Tenho dúvida sobre pagamento")' }
+        ];
+
+        botoes.forEach(botao => {
+            const btn = document.createElement('button');
+            btn.className = 'bg-primary-container text-on-primary-container px-sm py-1 rounded-full font-body-sm hover:opacity-80 transition-all';
+            btn.textContent = botao.texto;
+            btn.onclick = () => eval(botao.acao);
+            div.appendChild(btn);
+        });
+
+        chatMensagens.appendChild(div);
+        chatMensagens.scrollTop = chatMensagens.scrollHeight;
+    }
+
+    function selecionarOpcao(opcao) {
+        adicionarMensagemChat(opcao, 'usuario');
+        document.getElementById('chat-input').value = '';
+
+        setTimeout(() => {
+            const respostas = {
+                'Tenho dúvida sobre minha conta': 'Você pode atualizar seus dados na seção de Configurações > Perfil. Há algo específico em que eu possa ajudá-lo?',
+                'Tenho problema com agendamento': 'Entendo. Você está tendo dificuldade para agendar uma consulta? Posso ajudá-lo a resolver este problema.',
+                'Tenho dúvida sobre pagamento': 'Os detalhes de todos os seus pagamentos estão disponíveis em Pagamentos. Qual é a sua dúvida específica?'
+            };
+
+            adicionarMensagemChat(respostas[opcao] || 'Como posso ajudá-lo?', 'agente');
+        }, 800);
+    }
+
+    function sair() {
+        localStorage.removeItem('user_session');
+        window.location.href = '/login';
+    }
+</script>
+</body>
+</html>

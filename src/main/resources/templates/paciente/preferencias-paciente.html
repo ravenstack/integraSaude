@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>IntegraSaude - Preferências</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed": "#f0dbff", "error": "#ba1a1a",
+                        "surface-container-low": "#faf1fa", "outline-variant": "#cec3d3",
+                        "surface": "#fff7fe", "surface-variant": "#e8e0e9", "surface-container": "#f4ebf4",
+                        "outline": "#7d7482", "surface-container-highest": "#e8e0e9",
+                        "surface-container-high": "#eee5ef", "on-background": "#1e1a21",
+                        "surface-container-lowest": "#ffffff", "primary": "#7543a9",
+                        "on-primary": "#ffffff", "primary-container": "#8f5cc4",
+                        "on-primary-container": "#fffbff", "secondary": "#6b567f",
+                        "on-secondary": "#ffffff", "secondary-container": "#e7cdfe",
+                        "tertiary": "#7a5812", "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6", "on-error-container": "#93000a",
+                        "on-surface": "#1e1a21", "background": "#fff7fe",
+                        "on-surface-variant": "#4b4451"
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px", "sm": "0.5rem" },
+                    spacing: { "md": "24px", "base": "4px", "xl": "48px", "sm": "16px", "lg": "32px", "xs": "8px", "margin": "24px" },
+                    fontFamily: { "label-caps": ["Outfit"], "body-lg": ["Outfit"], "h1": ["Outfit"], "button": ["Outfit"], "body-sm": ["Outfit"], "h3": ["Outfit"], "h2": ["Outfit"], "body-md": ["Outfit"] }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Outfit', sans-serif; }
+        .skeleton { background: linear-gradient(90deg, #f4ebf4 25%, #e8e0e9 50%, #f4ebf4 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; color: transparent !important; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* Toggle Switch */
+        .toggle-input { display: none; }
+        .toggle-label { display: flex; align-items: center; cursor: pointer; gap: 12px; }
+        .toggle-track { width: 44px; height: 24px; background: #cec3d3; border-radius: 9999px; position: relative; transition: background 0.2s; flex-shrink: 0; }
+        .toggle-thumb { width: 18px; height: 18px; background: white; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: left 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .toggle-input:checked + .toggle-label .toggle-track { background: #7543a9; }
+        .toggle-input:checked + .toggle-label .toggle-thumb { left: 23px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<div class="flex min-h-screen">
+
+    <aside class="hidden md:flex flex-col h-screen py-md px-sm sticky top-0 bg-surface-container-low border-r border-outline-variant w-[240px]">
+        <div class="mb-lg px-sm mt-4">
+            <h2 class="font-h2 font-bold text-primary">IntegraSaude</h2>
+            <p class="font-label-caps text-[10px] text-secondary uppercase tracking-wider mt-base">Gestão Clínica Multidisciplinar</p>
+        </div>
+        <nav class="flex-1 flex flex-col gap-xs mt-4">
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs rounded transition-colors" href="/dashboard-paciente"><span class="material-symbols-outlined">dashboard</span><span class="font-body-md">Dashboard</span></a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs rounded transition-colors" href="/agenda-paciente"><span class="material-symbols-outlined">calendar_today</span><span class="font-body-md">Agenda</span></a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs rounded transition-colors" href="/diario-paciente"><span class="material-symbols-outlined">mood</span><span class="font-body-md">Diário</span></a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs rounded transition-colors" href="/documentacao-paciente"><span class="material-symbols-outlined">description</span><span class="font-body-md">Documentos</span></a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs rounded transition-colors" href="/pagamentos-paciente"><span class="material-symbols-outlined">credit_card</span><span class="font-body-md">Pagamentos</span></a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs rounded transition-colors" href="/perfil-paciente"><span class="material-symbols-outlined">person</span><span class="font-body-md">Perfil</span></a>
+            <a class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs rounded transition-colors" href="/seguranca-paciente"><span class="material-symbols-outlined">security</span><span class="font-body-md">Segurança</span></a>
+            <a class="flex items-center gap-sm bg-primary-container text-on-primary-container rounded px-sm py-xs" href="/preferencias-paciente"><span class="material-symbols-outlined">tune</span><span class="font-body-md font-bold">Preferências</span></a>
+        </nav>
+        <div class="mt-auto flex flex-col gap-xs pt-md border-t border-outline-variant">
+            <button onclick="sair()" class="w-full flex items-center gap-sm text-error hover:bg-error-container/20 px-sm py-xs rounded transition-all text-left"><span class="material-symbols-outlined">logout</span><span class="font-body-md font-bold">Sair</span></button>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col min-w-0">
+        <header class="flex justify-between items-center h-[64px] px-margin w-full sticky top-0 z-40 bg-surface border-b border-outline-variant">
+            <div class="md:hidden flex items-center gap-2 text-primary"><span class="font-h3 font-bold">IntegraSaude</span></div>
+            <div class="hidden md:block"></div>
+            <div class="flex items-center gap-sm">
+                <div class="text-right hidden sm:block mr-2">
+                    <p id="header-nome" class="text-[14px] font-bold text-on-surface skeleton">Carregando...</p>
+                    <p class="text-[11px] text-secondary uppercase font-bold tracking-widest">Paciente</p>
+                </div>
+                <div class="h-10 w-10 rounded-full border border-primary bg-primary-fixed flex items-center justify-center text-primary font-bold shadow-sm" id="header-avatar">--</div>
+            </div>
+        </header>
+
+        <main class="p-margin max-w-7xl mx-auto w-full">
+
+            <div class="mb-lg">
+                <h1 class="font-h1 text-on-surface">Preferências</h1>
+                <p class="font-body-md text-on-surface-variant">Personalize sua experiência na plataforma.</p>
+            </div>
+
+            <!-- Feedback de salvo -->
+            <div id="toast" class="hidden fixed bottom-8 right-8 z-50 bg-on-surface text-surface px-lg py-sm rounded-full shadow-xl font-button text-sm flex items-center gap-xs transition-all">
+                <span class="material-symbols-outlined text-sm">check_circle</span> Preferências salvas!
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+                <div class="md:col-span-8 space-y-lg">
+
+                    <!-- Notificações -->
+                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+                        <h3 class="font-h3 text-primary mb-xs flex items-center gap-xs">
+                            <span class="material-symbols-outlined">notifications</span> Notificações
+                        </h3>
+                        <p class="font-body-sm text-on-surface-variant mb-md">Escolha quando e como deseja ser notificado.</p>
+
+                        <div class="space-y-md divide-y divide-outline-variant/30">
+
+                            <div class="flex items-center justify-between pt-md first:pt-0">
+                                <div>
+                                    <p class="font-body-md font-semibold text-on-surface">Lembrete de consulta</p>
+                                    <p class="font-body-sm text-secondary">Receba um aviso antes da sua sessão agendada.</p>
+                                </div>
+                                <input type="checkbox" id="notif-consulta" class="toggle-input" checked>
+                                <label for="notif-consulta" class="toggle-label">
+                                    <div class="toggle-track"><div class="toggle-thumb"></div></div>
+                                </label>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-md">
+                                <div>
+                                    <p class="font-body-md font-semibold text-on-surface">Novos documentos</p>
+                                    <p class="font-body-sm text-secondary">Avise quando um profissional enviar um documento.</p>
+                                </div>
+                                <input type="checkbox" id="notif-docs" class="toggle-input" checked>
+                                <label for="notif-docs" class="toggle-label">
+                                    <div class="toggle-track"><div class="toggle-thumb"></div></div>
+                                </label>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-md">
+                                <div>
+                                    <p class="font-body-md font-semibold text-on-surface">Dicas de saúde</p>
+                                    <p class="font-body-sm text-secondary">Receba dicas clínicas semanais personalizadas.</p>
+                                </div>
+                                <input type="checkbox" id="notif-dicas" class="toggle-input">
+                                <label for="notif-dicas" class="toggle-label">
+                                    <div class="toggle-track"><div class="toggle-thumb"></div></div>
+                                </label>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-md">
+                                <div>
+                                    <p class="font-body-md font-semibold text-on-surface">Atualizações da plataforma</p>
+                                    <p class="font-body-sm text-secondary">Novidades e melhorias do IntegraSaude.</p>
+                                </div>
+                                <input type="checkbox" id="notif-updates" class="toggle-input">
+                                <label for="notif-updates" class="toggle-label">
+                                    <div class="toggle-track"><div class="toggle-thumb"></div></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Antecedência do lembrete -->
+                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+                        <h3 class="font-h3 text-primary mb-xs flex items-center gap-xs">
+                            <span class="material-symbols-outlined">alarm</span> Antecedência do Lembrete
+                        </h3>
+                        <p class="font-body-sm text-on-surface-variant mb-md">Com quanto tempo de antecedência deseja ser lembrado da consulta?</p>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-sm">
+                            <label class="lembrete-opt cursor-pointer">
+                                <input type="radio" name="lembrete" value="15" class="hidden">
+                                <div class="border border-outline-variant rounded-lg p-sm text-center hover:border-primary transition-all font-body-md text-on-surface-variant hover:text-primary hover:bg-primary-fixed">15 min</div>
+                            </label>
+                            <label class="lembrete-opt cursor-pointer">
+                                <input type="radio" name="lembrete" value="30" class="hidden" checked>
+                                <div class="border-2 border-primary rounded-lg p-sm text-center font-body-md text-primary bg-primary-fixed">30 min</div>
+                            </label>
+                            <label class="lembrete-opt cursor-pointer">
+                                <input type="radio" name="lembrete" value="60" class="hidden">
+                                <div class="border border-outline-variant rounded-lg p-sm text-center hover:border-primary transition-all font-body-md text-on-surface-variant hover:text-primary hover:bg-primary-fixed">1 hora</div>
+                            </label>
+                            <label class="lembrete-opt cursor-pointer">
+                                <input type="radio" name="lembrete" value="1440" class="hidden">
+                                <div class="border border-outline-variant rounded-lg p-sm text-center hover:border-primary transition-all font-body-md text-on-surface-variant hover:text-primary hover:bg-primary-fixed">1 dia</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Privacidade do Diário -->
+                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+                        <h3 class="font-h3 text-primary mb-xs flex items-center gap-xs">
+                            <span class="material-symbols-outlined">lock</span> Privacidade do Diário
+                        </h3>
+                        <p class="font-body-sm text-on-surface-variant mb-md">Controle quem pode visualizar as entradas do seu diário de humor.</p>
+
+                        <div class="space-y-sm">
+                            <label class="flex items-start gap-sm cursor-pointer p-sm rounded-lg border border-outline-variant hover:border-primary transition-all has-[:checked]:border-primary has-[:checked]:bg-primary-fixed">
+                                <input type="radio" name="privacidade" value="privado" class="mt-1 accent-primary" checked>
+                                <div>
+                                    <p class="font-body-md font-semibold text-on-surface">Privado</p>
+                                    <p class="font-body-sm text-secondary">Apenas você pode ver as entradas.</p>
+                                </div>
+                            </label>
+                            <label class="flex items-start gap-sm cursor-pointer p-sm rounded-lg border border-outline-variant hover:border-primary transition-all has-[:checked]:border-primary has-[:checked]:bg-primary-fixed">
+                                <input type="radio" name="privacidade" value="profissional" class="mt-1 accent-primary">
+                                <div>
+                                    <p class="font-body-md font-semibold text-on-surface">Compartilhar com profissional</p>
+                                    <p class="font-body-sm text-secondary">Seu terapeuta poderá acompanhar seus registros.</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button onclick="salvarPreferencias()" class="bg-primary text-on-primary font-button px-lg py-sm rounded-full hover:opacity-90 transition-all shadow-md flex items-center gap-xs">
+                            <span class="material-symbols-outlined text-sm">save</span> Salvar Preferências
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sidebar com resumo -->
+                <aside class="md:col-span-4 space-y-lg">
+                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+                        <h4 class="font-label-caps text-[11px] text-secondary uppercase mb-md font-bold">Resumo Atual</h4>
+                        <div class="space-y-sm divide-y divide-outline-variant/30">
+                            <div class="flex justify-between items-center py-2">
+                                <span class="font-body-sm text-on-surface-variant">Lembrete de consulta:</span>
+                                <span id="resumo-consulta" class="font-body-sm font-bold text-primary">Ativo</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="font-body-sm text-on-surface-variant">Novos documentos:</span>
+                                <span id="resumo-docs" class="font-body-sm font-bold text-primary">Ativo</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="font-body-sm text-on-surface-variant">Antecedência:</span>
+                                <span id="resumo-lembrete" class="font-body-sm font-bold text-on-surface">30 min</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="font-body-sm text-on-surface-variant">Diário:</span>
+                                <span id="resumo-privacidade" class="font-body-sm font-bold text-on-surface">Privado</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-md bg-primary-fixed border border-primary/20 rounded-xl">
+                        <div class="flex items-center gap-xs mb-xs">
+                            <span class="material-symbols-outlined text-primary text-sm">info</span>
+                            <p class="font-body-sm font-bold text-primary">Sobre as preferências</p>
+                        </div>
+                        <p class="font-body-sm text-on-surface-variant text-xs leading-relaxed">As preferências são salvas localmente e sincronizadas com o servidor quando disponíveis.</p>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+</div>
+
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-[64px] bg-surface border-t border-outline-variant flex items-center justify-around px-sm z-50">
+    <a href="/dashboard-paciente" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined">dashboard</span><span class="font-label-caps text-[10px]">HOME</span></a>
+    <a href="/preferencias-paciente" class="flex flex-col items-center gap-1 text-primary"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">tune</span><span class="font-label-caps text-[10px]">PREF.</span></a>
+    <a href="/perfil-paciente" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined">person</span><span class="font-label-caps text-[10px]">PERFIL</span></a>
+</nav>
+
+<script>
+    const PREFS_KEY = 'integrasaude_prefs';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const sessionStr = localStorage.getItem('user_session');
+        if (!sessionStr) { window.location.href = '/login'; return; }
+        const usuario = JSON.parse(sessionStr);
+        const primeiroNome = usuario.nome ? usuario.nome.split(' ')[0] : 'Paciente';
+        const elNome = document.getElementById('header-nome');
+        if (elNome) { elNome.classList.remove('skeleton'); elNome.innerText = primeiroNome; }
+        document.getElementById('header-avatar').innerText = primeiroNome.substring(0, 2).toUpperCase();
+
+        carregarPreferencias();
+        configurarRadiosLembrete();
+        configurarListeners();
+    });
+
+    function carregarPreferencias() {
+        const salvas = JSON.parse(localStorage.getItem(PREFS_KEY)) || {};
+        if (salvas.notifConsulta !== undefined) document.getElementById('notif-consulta').checked = salvas.notifConsulta;
+        if (salvas.notifDocs     !== undefined) document.getElementById('notif-docs').checked     = salvas.notifDocs;
+        if (salvas.notifDicas    !== undefined) document.getElementById('notif-dicas').checked    = salvas.notifDicas;
+        if (salvas.notifUpdates  !== undefined) document.getElementById('notif-updates').checked  = salvas.notifUpdates;
+        if (salvas.lembrete) {
+            document.querySelectorAll('input[name="lembrete"]').forEach(r => {
+                r.checked = r.value === String(salvas.lembrete);
+            });
+        }
+        if (salvas.privacidade) {
+            document.querySelectorAll('input[name="privacidade"]').forEach(r => {
+                r.checked = r.value === salvas.privacidade;
+            });
+        }
+        atualizarResumo();
+        configurarRadiosLembrete();
+    }
+
+    function configurarRadiosLembrete() {
+        document.querySelectorAll('.lembrete-opt').forEach(label => {
+            const input = label.querySelector('input');
+            const div = label.querySelector('div');
+            const ativo = 'border-2 border-primary rounded-lg p-sm text-center font-body-md text-primary bg-primary-fixed';
+            const inativo = 'border border-outline-variant rounded-lg p-sm text-center hover:border-primary transition-all font-body-md text-on-surface-variant hover:text-primary hover:bg-primary-fixed';
+            div.className = input.checked ? ativo : inativo;
+            label.onclick = () => {
+                document.querySelectorAll('.lembrete-opt div').forEach(d => d.className = inativo);
+                div.className = ativo;
+                atualizarResumo();
+            };
+        });
+    }
+
+    function configurarListeners() {
+        ['notif-consulta','notif-docs','notif-dicas','notif-updates'].forEach(id => {
+            document.getElementById(id).addEventListener('change', atualizarResumo);
+        });
+        document.querySelectorAll('input[name="privacidade"]').forEach(r => r.addEventListener('change', atualizarResumo));
+        document.querySelectorAll('input[name="lembrete"]').forEach(r => r.addEventListener('change', atualizarResumo));
+    }
+
+    function atualizarResumo() {
+        document.getElementById('resumo-consulta').innerText = document.getElementById('notif-consulta').checked ? 'Ativo' : 'Inativo';
+        document.getElementById('resumo-docs').innerText     = document.getElementById('notif-docs').checked     ? 'Ativo' : 'Inativo';
+
+        const lembrete = document.querySelector('input[name="lembrete"]:checked')?.value || '30';
+        const mapLembrete = { '15': '15 min', '30': '30 min', '60': '1 hora', '1440': '1 dia' };
+        document.getElementById('resumo-lembrete').innerText = mapLembrete[lembrete] || '30 min';
+
+        const privacidade = document.querySelector('input[name="privacidade"]:checked')?.value || 'privado';
+        document.getElementById('resumo-privacidade').innerText = privacidade === 'privado' ? 'Privado' : 'Compartilhado';
+    }
+
+    function salvarPreferencias() {
+        const prefs = {
+            notifConsulta: document.getElementById('notif-consulta').checked,
+            notifDocs:     document.getElementById('notif-docs').checked,
+            notifDicas:    document.getElementById('notif-dicas').checked,
+            notifUpdates:  document.getElementById('notif-updates').checked,
+            lembrete:      document.querySelector('input[name="lembrete"]:checked')?.value || '30',
+            privacidade:   document.querySelector('input[name="privacidade"]:checked')?.value || 'privado',
+        };
+        localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+        atualizarResumo();
+        mostrarToast();
+    }
+
+    function mostrarToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 2500);
+    }
+
+    function sair() {
+        localStorage.removeItem('user_session');
+        window.location.href = '/login';
+    }
+</script>
+</body>
+</html>

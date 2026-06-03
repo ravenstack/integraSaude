@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>IntegraSaude - Login Unificado</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7543a9",
+                        "amethyst": "#925fc7",
+                        "secondary": "#846e99",
+                        "background": "#fff7fe",
+                        "surface": "#ffffff",
+                        "surface-container-low": "#faf1fa",
+                        "outline-variant": "#cec3d3",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a"
+                    },
+                    fontFamily: {
+                        "sans": ["Outfit", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "md": "16px", // MD Padrão para Botões/Inputs
+                        "lg": "32px", // MD Padrão para Cards
+                        "xl": "48px"  // MD Padrão para Containers
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        /* Suaviza a transição de seleção de perfil */
+        .btn-perfil-ativo {
+            border-color: #925fc7 !important;
+            background-color: #faf1fa !important;
+            color: #925fc7 !important;
+            box-shadow: 0 0 0 2px #925fc7;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex items-center justify-center p-4">
+
+<div class="w-full max-w-5xl grid md:grid-cols-2 bg-surface rounded-xl shadow-[0_12px_32px_rgba(0,0,0,0.08)] overflow-hidden min-h-[600px] border border-outline-variant">
+
+    <div class="hidden md:block relative">
+        <img class="absolute inset-0 w-full h-full object-cover" src="https://images.pexels.com/photos/7176060/pexels-photo-7176060.jpeg" alt="Clínica"/>
+        <div class="absolute inset-0 bg-primary/60 backdrop-blur-[2px] flex flex-col justify-end p-12 text-white">
+            <h2 class="text-3xl font-bold mb-4">Gestão Clínica Inteligente</h2>
+            <p class="text-white/90">Praticidade e segurança para o seu dia a dia profissional e pessoal.</p>
+        </div>
+    </div>
+
+    <div class="p-8 md:p-16 flex flex-col justify-center">
+        <div class="flex items-center gap-2 mb-12 text-primary">
+            <img src="/img/logo.png" class="w-10 h-10 object-contain" alt="Logo IntegraSaude" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3063/3063176.png'">
+            <span class="text-xl font-bold tracking-tight uppercase">IntegraSaude</span>
+        </div>
+
+        <div id="error-banner" class="hidden mb-6 p-4 bg-error-container border border-error/20 rounded-md flex items-start gap-3">
+            <span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">error</span>
+            <div>
+                <p id="error-title" class="text-on-error-container font-bold text-sm">Acesso negado</p>
+                <p id="error-message" class="text-on-error-container text-xs mt-1 leading-relaxed"></p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <button id="btn-profissional" onclick="selecionar('PROFISSIONAL')" type="button" class="p-4 rounded-md border border-outline-variant transition-all flex flex-col items-center gap-2 text-secondary">
+                <span class="material-symbols-outlined">psychology</span>
+                <span class="text-xs font-bold uppercase tracking-wider">Profissional</span>
+            </button>
+            <button id="btn-paciente" onclick="selecionar('PACIENTE')" type="button" class="p-4 rounded-md border border-outline-variant transition-all flex flex-col items-center gap-2 text-secondary">
+                <span class="material-symbols-outlined">person</span>
+                <span class="text-xs font-bold uppercase tracking-wider">Paciente</span>
+            </button>
+        </div>
+
+        <form id="formLogin" class="space-y-6">
+            <div class="relative">
+                <span class="material-symbols-outlined absolute left-4 top-4 text-secondary">alternate_email</span>
+                <input id="email" type="text" placeholder="E-mail ou CPF" class="w-full pl-12 pr-4 py-4 bg-surface border border-outline-variant rounded-md focus:ring-2 focus:ring-amethyst focus:border-amethyst outline-none transition-all" required>
+            </div>
+
+            <div class="relative">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-[12px] font-bold text-secondary uppercase tracking-widest">Sua senha</label>
+                    <a href="/recuperar-senha" class="text-[12px] font-bold text-primary hover:text-amethyst transition-colors uppercase tracking-wider">Esqueci a senha</a>
+                </div>
+                <span class="material-symbols-outlined absolute left-4 top-[2.6rem] text-secondary">lock</span>
+                <input id="password" type="password" placeholder="••••••••" class="w-full pl-12 pr-4 py-4 bg-surface border border-outline-variant rounded-md focus:ring-2 focus:ring-amethyst focus:border-amethyst outline-none transition-all" required>
+            </div>
+
+            <button type="submit" class="w-full bg-amethyst text-white py-4 rounded-md font-bold text-lg hover:bg-primary transition-all shadow-lg active:scale-95">
+                Entrar no Portal
+            </button>
+        </form>
+
+        <div class="mt-8 pt-6 border-t border-surface-container-low text-center">
+            <p class="text-secondary text-sm">Ainda não possui uma conta?</p>
+            <a href="/cadastro-escolha" class="inline-block mt-2 text-primary font-bold hover:underline">Cadastre-se aqui</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. Variável de Perfil Corrigida para bater com o Backend
+    let perfil = 'PROFISSIONAL';
+
+    // 2. Função de Seleção Corrigida (Trata Mismatch de IDs) [cite: 227, 228]
+    function selecionar(p) {
+        perfil = p;
+
+        // Remove classes de ativo de todos os botões que começam com "btn-"
+        document.querySelectorAll('button[id^="btn-"]').forEach(b => {
+            b.classList.remove('btn-perfil-ativo');
+            b.classList.add('text-secondary', 'border-outline-variant');
+        });
+
+        // Aplica classe de ativo no botão selecionado
+        const ativo = document.getElementById('btn-' + p.toLowerCase());
+        if (ativo) {
+            ativo.classList.remove('text-secondary', 'border-outline-variant');
+            ativo.classList.add('btn-perfil-ativo');
+        }
+    }
+
+    // 3. Lógica de Login com Erros Dinâmicos [cite: 151, 153]
+    document.getElementById('formLogin').onsubmit = async (e) => {
+        e.preventDefault();
+
+        const banner = document.getElementById('error-banner');
+        const errTitle = document.getElementById('error-title');
+        const errText = document.getElementById('error-message');
+        banner.classList.add('hidden');
+
+        const btn = e.target.querySelector('button[type="submit"]');
+        const txtOrg = btn.innerText;
+        btn.innerText = 'Autenticando...';
+        btn.disabled = true;
+
+        try {
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    email: document.getElementById('email').value,
+                    senha: document.getElementById('password').value,
+                    perfil: perfil
+                })
+            });
+
+            if (res.ok) {
+                const user = await res.json();
+                localStorage.setItem('user_session', JSON.stringify(user));
+
+                // Redirecionamento dinâmico conforme o perfil
+                if (perfil === 'PACIENTE') {
+                    window.location.href = '/dashboard-paciente';
+                } else {
+                    window.location.href = '/dashboard-profissional';
+                }
+            } else {
+                const msg = await res.text();
+
+                // Tratamento dos 3 erros de negócio [cite: 147, 150]
+                if (msg.includes("não encontrado")) {
+                    errTitle.innerText = `Perfil Inválido`;
+                    errText.innerText = `Este e-mail não possui cadastro como ${perfil.toLowerCase()}.`;
+                } else if (msg.includes("Senha incorreta")) {
+                    errTitle.innerText = "Senha incorreta";
+                    errText.innerText = "Verifique seus dados ou recupere sua senha.";
+                } else {
+                    errTitle.innerText = "Falha no Acesso";
+                    errText.innerText = msg || "Erro ao validar credenciais.";
+                }
+                banner.classList.remove('hidden');
+            }
+        } catch (err) {
+            errTitle.innerText = "Falha técnica";
+            errText.innerText = "Não foi possível conectar ao servidor IntegraSaude.";
+            banner.classList.remove('hidden');
+        } finally {
+            btn.innerText = txtOrg;
+            btn.disabled = false;
+        }
+    };
+
+    // Inicializa a página com o perfil Profissional já selecionado
+    selecionar('PROFISSIONAL');
+</script>
+</body>
+</html>

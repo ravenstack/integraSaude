@@ -1,0 +1,79 @@
+<!-- Sidebar Fixo do Paciente -->
+<aside class="hidden md:flex flex-col h-screen py-md px-sm sticky top-0 bg-surface-container-low border-r border-outline-variant w-[240px] shadow-sm">
+    <!-- Logo e Branding -->
+    <div class="mb-lg px-sm mt-4">
+        <h2 class="font-h2 text-h2 font-bold text-primary">IntegraSaude</h2>
+        <p class="font-label-caps text-[10px] text-secondary uppercase tracking-wider mt-base">Gestão Clínica<br>Multidisciplinar</p>
+    </div>
+
+    <!-- Menu Principal -->
+    <nav class="flex-1 flex flex-col gap-xs mt-4">
+        <a href="/dashboard-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="dashboard">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-body-md font-bold">Dashboard</span>
+        </a>
+
+        <a href="/agenda-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="agenda">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span class="font-body-md">Agenda</span>
+        </a>
+
+        <a href="/marcar-consulta" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="marcar-consulta">
+            <span class="material-symbols-outlined">event_available</span>
+            <span class="font-body-md">Marcar Consulta</span>
+        </a>
+
+        <a href="/documentos-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="documentos">
+            <span class="material-symbols-outlined">description</span>
+            <span class="font-body-md">Documentos</span>
+        </a>
+
+        <a href="/diario-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="diario">
+            <span class="material-symbols-outlined">book</span>
+            <span class="font-body-md">Diário</span>
+        </a>
+    </nav>
+
+    <!-- Separador -->
+    <div class="my-md border-t border-outline-variant/50"></div>
+
+    <!-- Menu Secundário -->
+    <div class="flex flex-col gap-xs pb-md">
+        <a href="#" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs rounded transition-all">
+            <span class="material-symbols-outlined">contact_support</span>
+            <span class="font-body-md">Falar com Suporte</span>
+        </a>
+        <button onclick="sair()" class="w-full flex items-center gap-sm text-error hover:bg-error-container/20 px-sm py-xs rounded transition-all text-left">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="font-body-md font-bold">Sair</span>
+        </button>
+    </div>
+</aside>
+
+<style>
+    .sidebar-link.active {
+        background-color: var(--primary-fixed, #f0dbff);
+        color: var(--primary, #7543a9);
+        font-weight: 600;
+    }
+</style>
+
+<script>
+    // Ativar link do sidebar baseado na página atual
+    function ativarSidebarLink() {
+        const caminhoPagina = window.location.pathname;
+        const links = document.querySelectorAll('.sidebar-link');
+
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (caminhoPagina === href || caminhoPagina.includes(link.dataset.page)) {
+                link.classList.add('active', 'bg-primary-fixed', 'text-primary');
+                link.classList.remove('text-secondary');
+            } else {
+                link.classList.remove('active', 'bg-primary-fixed', 'text-primary');
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', ativarSidebarLink);
+</script>

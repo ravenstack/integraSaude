@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Diário | IntegraSaúde</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="/config/tailwind.config.js"></script>
+</head>
+
+<body class="bg-background text-on-surface font-sans">
+
+<div class="flex h-screen">
+    <!-- Sidebar Fixo do Paciente -->
+    <aside class="hidden md:flex flex-col h-screen py-md px-sm sticky top-0 bg-surface-container-low border-r border-outline-variant w-[240px] shadow-sm">
+        <!-- Logo e Branding -->
+        <div class="mb-lg px-sm mt-4">
+            <h2 class="font-h2 text-h2 font-bold text-primary">IntegraSaude</h2>
+            <p class="font-label-caps text-[10px] text-secondary uppercase tracking-wider mt-base">Gestão Clínica<br>Multidisciplinar</p>
+        </div>
+
+        <!-- Menu Principal -->
+        <nav class="flex-1 flex flex-col gap-xs mt-4">
+            <a href="/dashboard-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link bg-primary-fixed text-primary font-bold" data-page="dashboard">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-body-md">Dashboard</span>
+            </a>
+            <a href="/agenda-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="agenda">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="font-body-md">Agenda</span>
+            </a>
+            <a href="/marcar-consulta" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="marcar-consulta">
+                <span class="material-symbols-outlined">event_note</span>
+                <span class="font-body-md">Marcar Consulta</span>
+            </a>
+            <a href="/documentos-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="documentos">
+                <span class="material-symbols-outlined">description</span>
+                <span class="font-body-md">Documentos</span>
+            </a>
+            <a href="/diario-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs scale-100 active:scale-95 transition-transform duration-150 rounded sidebar-link" data-page="diario">
+                <span class="material-symbols-outlined">notebook</span>
+                <span class="font-body-md">Diário</span>
+            </a>
+        </nav>
+
+        <!-- Separador -->
+        <div class="border-t border-outline-variant my-md"></div>
+
+        <!-- Menu Secundário -->
+        <div class="flex flex-col gap-xs">
+            <a href="/suporte-paciente" class="flex items-center gap-sm text-secondary hover:bg-surface-variant px-sm py-xs rounded transition-all">
+                <span class="material-symbols-outlined">contact_support</span>
+                <span class="font-body-md">Falar com Suporte</span>
+            </a>
+            <button onclick="sair()" class="w-full flex items-center gap-sm text-error hover:bg-error-container/20 px-sm py-xs rounded transition-all text-left">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-body-md font-bold">Sair</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <div class="flex-1 flex flex-col min-w-0">
+
+        <!-- Header Fixo -->
+        <header class="sticky top-0 z-40 bg-surface border-b border-outline-variant px-margin py-sm flex justify-between items-center h-20 shadow-sm">
+            <div>
+                <h1 class="text-lg font-bold text-on-surface">Meu Diário de Saúde</h1>
+                <p class="text-xs text-secondary">Registre suas emoções e evolução clínica</p>
+            </div>
+            <div class="flex items-center gap-md">
+                <a href="/perfil-paciente" class="px-md py-xs border border-outline-variant rounded-md hover:bg-surface-container-low transition-all text-sm">Perfil</a>
+                <a href="/seguranca-paciente" class="px-md py-xs border border-outline-variant rounded-md hover:bg-surface-container-low transition-all text-sm">Segurança</a>
+                <a href="/pagamentos-paciente" class="px-md py-xs border border-outline-variant rounded-md hover:bg-surface-container-low transition-all text-sm">Pagamentos</a>
+            </div>
+        </header>
+
+        <!-- Conteúdo Scrollável -->
+        <main class="flex-1 overflow-y-auto p-margin">
+            <div class="max-w-5xl mx-auto space-y-lg">
+
+                <!-- Nova Entrada de Diário -->
+                <div class="bg-surface border border-outline-variant rounded-md p-lg shadow-sm">
+                    <h2 class="text-lg font-bold text-on-surface mb-md flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-primary">edit</span>
+                        Nova Entrada
+                    </h2>
+
+                    <div id="error-banner" class="hidden mb-md p-sm bg-error-container border border-error/20 rounded-md flex items-start gap-sm">
+                        <span class="material-symbols-outlined text-error">error</span>
+                        <div>
+                            <p id="error-title" class="text-error font-bold text-sm">Erro</p>
+                            <p id="error-message" class="text-on-error-container text-xs mt-xs"></p>
+                        </div>
+                    </div>
+
+                    <form id="formDiario" class="space-y-md" onsubmit="handleSalvarDiario(event)">
+                        <div>
+                            <label class="text-xs font-bold text-secondary uppercase block mb-xs">Título da Entrada</label>
+                            <input type="text" id="titulo" placeholder="Ex: Como me senti hoje..."
+                                   class="w-full px-md py-sm border border-outline-variant rounded-md focus:ring-2 focus:ring-primary outline-none font-semibold text-on-surface" required>
+                        </div>
+
+                        <div>
+                            <label class="text-xs font-bold text-secondary uppercase block mb-xs">Seu Pensamento</label>
+                            <textarea id="conteudo" placeholder="Escreva livremente aqui..." rows="8"
+                                      class="w-full px-md py-sm border border-outline-variant rounded-md focus:ring-2 focus:ring-primary outline-none text-on-surface resize-none leading-relaxed" required></textarea>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-md border-t border-outline-variant">
+                            <span id="data-display" class="text-xs text-secondary font-semibold">Hoje</span>
+                            <button type="submit" id="btnSalvar" class="px-lg py-sm bg-primary text-on-primary rounded-md hover:bg-amethyst transition-all font-bold flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-sm">save</span>
+                                Salvar Entrada
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Histórico de Entradas -->
+                <div class="bg-surface border border-outline-variant rounded-md p-lg shadow-sm">
+                    <h2 class="text-lg font-bold text-on-surface mb-md flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-primary">history</span>
+                        Histórico Recente
+                    </h2>
+
+                    <div id="lista-diario" class="space-y-md">
+                        <div class="p-lg text-center opacity-40">
+                            <p class="text-sm">Carregando registros...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    const session = JSON.parse(localStorage.getItem('user_session'));
+    if (!session || !session.id) {
+        window.location.href = '/login';
+    }
+
+    document.getElementById('data-display').textContent = new Date().toLocaleDateString('pt-BR', { dateStyle: 'long' });
+
+    async function handleSalvarDiario(event) {
+        event.preventDefault();
+        const btn = document.getElementById('btnSalvar');
+        const titulo = document.getElementById('titulo').value;
+        const conteudo = document.getElementById('conteudo').value;
+
+        btn.disabled = true;
+        btn.textContent = 'Salvando...';
+
+        const session = JSON.parse(localStorage.getItem('user_session'));
+        const diario = { titulo, conteudo };
+
+        try {
+            const res = await fetch(`/api/diarios/${session.id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(diario)
+            });
+
+            if (res.ok) {
+                btn.textContent = '✓ Salvo!';
+                setTimeout(() => {
+                    btn.innerHTML = '<span class="material-symbols-outlined text-sm">save</span> Salvar Entrada';
+                    btn.disabled = false;
+                    document.getElementById('formDiario').reset();
+                    carregarHistorico();
+                }, 1500);
+            } else {
+                throw new Error('Erro ao salvar');
+            }
+        } catch (err) {
+            document.getElementById('error-message').textContent = 'Erro ao salvar. Tente novamente.';
+            document.getElementById('error-banner').classList.remove('hidden');
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm">save</span> Salvar Entrada';
+            btn.disabled = false;
+        }
+    }
+
+    async function carregarHistorico() {
+        const session = JSON.parse(localStorage.getItem('user_session'));
+        const container = document.getElementById('lista-diario');
+
+        try {
+            const res = await fetch(`/api/diarios/paciente/${session.id}`);
+            const historico = await res.json();
+
+            if (historico.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-surface-container-low border border-outline-variant rounded-md p-lg text-center opacity-60">
+                        <span class="material-symbols-outlined text-3xl text-secondary/40 block mb-sm">book</span>
+                        <p class="text-sm font-medium text-secondary">Seu diário está vazio</p>
+                        <p class="text-xs text-secondary/70 mt-xs">Comece a registrar seus pensamentos e sentimentos</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = historico.map(entrada => {
+                const data = new Date(entrada.dataCriacao);
+                const dataFormatada = data.toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+                const horaFormatada = data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+                return `
+                    <article class="bg-surface-container-lowest border border-outline-variant/50 rounded-md p-md hover:border-primary transition-all group">
+                        <div class="flex items-start justify-between mb-sm">
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-bold text-on-surface text-base group-hover:text-primary transition-colors">${entrada.titulo}</h3>
+                                <p class="text-xs text-secondary mt-xs">${dataFormatada} às ${horaFormatada}</p>
+                            </div>
+                            <button onclick="deletarEntrada(${entrada.id})" class="p-xs hover:bg-error-container rounded-full transition-all ml-sm flex-shrink-0">
+                                <span class="material-symbols-outlined text-error text-sm">delete</span>
+                            </button>
+                        </div>
+                        <p class="text-sm text-on-surface/80 leading-relaxed line-clamp-3">${entrada.conteudo}</p>
+                        <button onclick="expandirEntrada(${entrada.id}, this)" class="mt-sm text-xs text-primary hover:text-amethyst font-semibold transition-colors">
+                            Ler mais →
+                        </button>
+                    </article>
+                `;
+            }).join('');
+        } catch (err) {
+            console.error('Erro ao carregra diários:', err);
+        }
+    }
+
+    async function deletarEntrada(id) {
+        if (confirm('Tem certeza que deseja deletar esta entrada?')) {
+            try {
+                const res = await fetch(`/api/diarios/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    carregarHistorico();
+                }
+            } catch (err) {
+                alert('Erro ao deletar');
+            }
+        }
+    }
+
+    function expandirEntrada(id, botao) {
+        const historico = JSON.parse(localStorage.getItem('diario_historico')) || [];
+        const entrada = historico.find(e => e.id === id);
+
+        if (!entrada) return;
+
+        const article = botao.closest('article');
+        const jaExpandido = article.dataset.expandido === 'true';
+
+        if (jaExpandido) {
+            article.querySelector('p').classList.remove('line-clamp-none');
+            article.querySelector('p').classList.add('line-clamp-3');
+            botao.textContent = 'Ler mais →';
+            article.dataset.expandido = 'false';
+        } else {
+            article.querySelector('p').classList.remove('line-clamp-3');
+            article.querySelector('p').classList.add('line-clamp-none');
+            botao.textContent = '← Ler menos';
+            article.dataset.expandido = 'true';
+        }
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', carregarHistorico);
+</script>
+</body>
+</html>
