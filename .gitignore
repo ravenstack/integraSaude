@@ -38,7 +38,3 @@ build/
 
 ### Mac OS ###
 .DS_Store
-
-# Banco de dados local do H2
-dados_psicoagenda.*
-*.db
